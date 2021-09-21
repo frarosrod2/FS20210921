@@ -1,0 +1,17 @@
+{
+  "name": "fundamentos",
+  "version": "1.0.0",
+  "description": "Ejemplos y ejercicios",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francisco Rosa",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
