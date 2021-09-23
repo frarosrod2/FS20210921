@@ -3,56 +3,84 @@
     <head>
         <meta charset="utf-8">
         <title>Sakila</title>
+        <link rel="stylesheet" href="global.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
       </head>
-      <body>
-        <section>
-          <nav class="menu">
-            <ul>
-              <li><a href="#">Inicio</a></li>
-              <li><a href="#">Películas</a></li>
-              <li><a href="form.html">Formulario de registro</a></li>
-              <li><a href="#">Sobre nosotros</a></li>
-              <li><a href="#">Contacto</a></li>
-            </ul>
-          </nav>
+        
+      <body class="body-home">
+        <nav>
+          <ul class="topnav">
+            <li class="logo"><img src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></li>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Películas</a></li>
+            <li><a href="form.html">Formulario de registro</a></li>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </nav>
+          <section class="section-1">
+          <h2>¡Bienvenido a la página principal del videoclub Sakila!</h2>
+          <div class="flex-container">
+            <div class="flex-item">
+              <h3><u>Nuevas películas</u></h3>
+              <p class="p-m">En la siguiente tabla podrá encontrar las novedades más recientes de la industria cinematrográfica</p>
+              <table class="table">
+                <tr>
+                  <th scope="row">Película</th>
+                  <th>Actor principal</th>
+                  <th>Fecha</th>
+                  <th>Precio</th>
+                </tr>
+                <tr>
+                  <td>Shrek</td>
+                  <td>Samuel L. Jackson</td>
+                  <td>4-12-2021</td>
+                  <td>3€</td>
+                </tr>
+                <tr>
+                  <td>Pulp fiction</td>
+                  <td>Jhon Travolta</td>
+                  <td>5-12-2021</td>
+                  <td>3€</td>
+                </tr>
+                <tr>
+                  <td>Scarface</td>
+                  <td>Al Pacino</td>
+                  <td>7-12-2021</td>
+                  <td>5€</td>
+                </tr>
+              </table>
+              </div>
+              <div class="flex-item">
+                <h3><u>Películas destacadas</u></h3>
+              <p class="p-m">En la siguiente lista podrá encontrar las películas más populares</p>
+              <ul class="list">
+                <li class="head">
+                  <div class="poster">
+                    Cartel
+                  </div>
+                  <span class="name">Nombre</span>
+                  <span class="rating">Valoración</span>
+                </li>
+                <li>
+                  <div class="poster">
+                    <img class="image2" src="https://www.ecartelera.com/carteles/5000/5060/001.jpg">
+                  </div>
+                  <span class="name">Shreck</span>
+                  <span class="rating">8.6</span>
+                </li>
+              </ul>
+              </div>
+          </div>
         </section>
-        <article>
-          <h2><strong>Inicio</strong></h2>
-        <h2>¡Bienvenido a la página principal del videoclub Sakila!</h2>
-        <h3><u>Nuevas películas</u></h3>
-        <p>En la siguiente tabla podrá encontrar las novedades más recientes de la industria cinematrográfica</p>
-        <table>
-          <tr>
-            <th scope="row">Película</th>
-            <th>Actor principal</th>
-            <th>Fecha</th>
-            <th>Precio</th>
-          </tr>
-          <tr>
-            <td>Shrek</td>
-            <td>Samuel L. Jackson</td>
-            <td>4-12-2021</td>
-            <td>3€</td>
-          </tr>
-          <tr>
-            <td>Pulp fiction</td>
-            <td>Jhon Travolta</td>
-            <td>5-12-2021</td>
-            <td>3€</td>
-          </tr>
-          <tr>
-            <td>Scarface</td>
-            <td>Al Pacino</td>
-            <td>7-12-2021</td>
-            <td>5€</td>
-          </tr>
-        </table>
-        </article>
-        <br>
-        <br>
-        <br>
-        <footer>
-          <p>Sakila SL</p>
-        </footer>
+          <section class="map">
+            <h2>Nuestra ubicación</h2>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2988.625814630453!2d2.073023315209612!3d41.4907112975467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a493ef825ce345%3A0xf6159a8684eb7d95!2sVIEWNEXT!5e0!3m2!1ses!2ses!4v1632408708803!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          </section>
       </body>
+      <footer>
+        <div class="footer">
+            <p class="foot">Sakila ©</p>
+        </div>
+      </footer>
 </html>
