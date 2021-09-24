@@ -7,23 +7,24 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
       </head>
         
-      <body class="body-home">
-        <nav>
-          <ul class="topnav">
-            <li class="logo"><img src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></li>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Películas</a></li>
-            <li><a href="form.html">Formulario de registro</a></li>
-            <li><a href="#">Sobre nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
+      <body class="body">
+        <nav >
+          <ul class="nav">
+            <li class="nav__item"><img class="nav__item__logo" src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></li>
+            <li class="nav__item"><a class="nav__item__link" href="home.html">Inicio</a></li>
+            <li class="nav__item"><a class="nav__item__link" href="#">Películas</a></li>
+            <li class="nav__item"><a class="nav__item__link" href="form.html">Formulario de registro</a></li>
+            <li class="nav__item"><a class="nav__item__link" href="#">Sobre nosotros</a></li>
+            <li class="nav__item"><a class="nav__item__link" href="#">Contacto</a></li>
           </ul>
         </nav>
-          <section class="section-1">
+        <div class="container">
+          <section class="section">
           <h2>¡Bienvenido a la página principal del videoclub Sakila!</h2>
           <div class="flex-container">
-            <div class="flex-item">
+            <div class="flex-container__flex-item">
               <h3><u>Nuevas películas</u></h3>
-              <p class="p-m">En la siguiente tabla podrá encontrar las novedades más recientes de la industria cinematrográfica</p>
+              <p class="paraph">En la siguiente tabla podrá encontrar las novedades más recientes de la industria cinematrográfica</p>
               <table class="table">
                 <tr>
                   <th scope="row">Película</th>
@@ -51,23 +52,23 @@
                 </tr>
               </table>
               </div>
-              <div class="flex-item">
+              <div class="flex-container__flex-item">
                 <h3><u>Películas destacadas</u></h3>
-              <p class="p-m">En la siguiente lista podrá encontrar las películas más populares</p>
+              <p class="paraph">En la siguiente lista podrá encontrar las películas más populares</p>
               <ul class="list">
-                <li class="head">
-                  <div class="poster">
+                <li class="list__item">
+                  <div class="list__item__poster">
                     Cartel
                   </div>
-                  <span class="name">Nombre</span>
-                  <span class="rating">Valoración</span>
+                  <span class="list__item__name">Nombre</span>
+                  <span class="list__item__rating">Valoración</span>
                 </li>
-                <li>
-                  <div class="poster">
-                    <img class="image2" src="https://www.ecartelera.com/carteles/5000/5060/001.jpg">
+                <li class="list__item">
+                  <div class="list__item__poster">
+                    <img class="list__item__poster__img" src="https://www.ecartelera.com/carteles/5000/5060/001.jpg">
                   </div>
-                  <span class="name">Shreck</span>
-                  <span class="rating">8.6</span>
+                  <span class="list__item__name">Shreck</span>
+                  <span class="list__item__rating">8.6</span>
                 </li>
               </ul>
               </div>
@@ -77,10 +78,11 @@
             <h2>Nuestra ubicación</h2>
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2988.625814630453!2d2.073023315209612!3d41.4907112975467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a493ef825ce345%3A0xf6159a8684eb7d95!2sVIEWNEXT!5e0!3m2!1ses!2ses!4v1632408708803!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
           </section>
+        </div>
       </body>
       <footer>
         <div class="footer">
-            <p class="foot">Sakila ©</p>
+            <p class="footer__paraph">Sakila ©</p>
         </div>
       </footer>
 </html>
