@@ -8,90 +8,92 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
   <title>Formulario</title>
 </head>
-<body class="body-home">
+<body class="body">
   <nav>
-    <ul class="topnav">
-      <li class="logo"><img src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></li>
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Películas</a></li>
-      <li><a href="form.html">Formulario de registro</a></li>
-      <li><a href="#">Sobre nosotros</a></li>
-      <li><a href="#">Contacto</a></li>
+    <ul class="nav">
+      <li class="nav__item"><img class="nav__item__logo" src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></li>
+      <li class="nav__item"><a class="nav__item__link" href="home.html">Inicio</a></li>
+      <li class="nav__item"><a class="nav__item__link" href="#">Películas</a></li>
+      <li class="nav__item"><a class="nav__item__link" href="form.html">Formulario de registro</a></li>
+      <li class="nav__item"><a class="nav__item__link" href="#">Sobre nosotros</a></li>
+      <li class="nav__item"><a class="nav__item__link" href="#">Contacto</a></li>
     </ul>
   </nav>
-  <section class="section-1">
-    <h3><strong>Formulario de registro de cliente</strong></h3>
-    <form method="post">
-      <div class="flex-container">
-        <span class="flex-form">
-          <label for="name">Nombre*: </label><br>
-          <input required id="name" type="text" name="name" size="30" maxlength="30"><br>
-        </span>
-        <span class="flex-form">
-          <label for="surname">Apellidos*: </label><br>
-          <input required id="surname" type="text" name="surname" size="30" maxlength="30"><br>
-        </span>
-        <span class="flex-form">
-          <label required for="email">Email*: </label><br>
-          <input id="email" type="email" name="email" size="30" maxlength="30">
-        </span>
-      <br>
-        <span class="flex-form">
-          <label for="born">Fecha de nacimiento *: </label><br>
-          <input required id="born" type="date" name="born" min="1900-01-01" max="2005-01-01"><br>
-        </span>
-        <span class="flex-form">
-          <label>Sexo*:</label><br>
-          <input id="h" type="radio" checked name="mh" value="h"> 
-          <label for="h">Hombre: </label><br>
-          <input id="m" type="radio" name="mh" value="m"> 
-          <label for="m">Mujer: </label><br>
-        </span>
-        <span class="flex-form">
-          <label required for="addr">Dirección*: </label><br>
-          <input id="addr" type="text" name="addr" size="30" maxlength="40"><br>
-        </span>
-        <span class="flex-form">
-          <label for="addr2">Dirección 2: </label><br>
-          <input id="addr2" type="text" name="addr2" size="30" maxlength="40"><br>
-        </span>
-        <span class="flex-form">
-          <label for="city">Ciudad*: </label><br>
-          <input required id="city" type="text" name="city" size="30" maxlength="30"><br>
-        </span>
-        <span class="flex-form">
-          <label for="coun">País*: </label><br>
-          <input required id="coun" type="text" name="country" size="30" maxlength="30"><br>
-        </span>
-        <span class="flex-form">
-          <label for="cp">Código postal: </label><br>
-          <input id="cp" type="number" name="cp" min="1" max="99999"><br>
-        </span>
-        <span class="flex-form">
-          <label for="stores">Tienda en la que ha sido cliente*:</label><br>
-            <select  class="select" name="stores" id="stores" multiple>
-            <option value="zara">Zara</option>
-            <option value="mango">Mango</option>
-            <option value="pull">Pull and Bear</option>
-            <option value="gucci">Gucci</option>
-            <option value="gucci">Prada</option>
-          </select><br>
-        </span>
-        <span class="flex-form">
-          <label for="range">Gasto:</label><br>
-          <input required type="number" id="range" name="range" maxlength="5" min="0" max="10000"><br>
-        </span>
-      </div>
-      <p class="submit">
-        <input class="button" type="submit" value="Enviar">
-        <input  class="button" type="reset" value="Borrar">
-      </p>
-    </form>
-  </section>
+  <div class="container">
+    <section class="section">
+      <h3><strong>Formulario de registro de cliente</strong></h3>
+      <form method="post">
+        <div class="flex-container">
+          <span class="flex-container__input">
+            <label for="name">Nombre*: </label><br>
+            <input required id="name" type="text" name="name" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="surname">Apellidos*: </label><br>
+            <input required id="surname" type="text" name="surname" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label required for="email">Email*: </label><br>
+            <input id="email" type="email" name="email" size="30" maxlength="30">
+          </span>
+        <br>
+          <span class="flex-container__input">
+            <label for="born">Fecha de nacimiento *: </label><br>
+            <input required id="born" type="date" name="born" min="1900-01-01" max="2005-01-01"><br>
+          </span>
+          <span class="flex-container__input">
+            <label>Sexo*:</label><br>
+            <input id="h" type="radio" checked name="mh" value="h"> 
+            <label for="h">Hombre: </label><br>
+            <input id="m" type="radio" name="mh" value="m"> 
+            <label for="m">Mujer: </label><br>
+          </span>
+          <span class="flex-container__input">
+            <label required for="addr">Dirección*: </label><br>
+            <input id="addr" type="text" name="addr" size="30" maxlength="40"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="addr2">Dirección 2: </label><br>
+            <input id="addr2" type="text" name="addr2" size="30" maxlength="40"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="city">Ciudad*: </label><br>
+            <input required id="city" type="text" name="city" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="coun">País*: </label><br>
+            <input required id="coun" type="text" name="country" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="cp">Código postal: </label><br>
+            <input id="cp" type="number" name="cp" min="1" max="99999"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="stores">Tienda en la que ha sido cliente*:</label><br>
+              <select  class="select" name="stores" id="stores" multiple>
+              <option value="zara">Zara</option>
+              <option value="mango">Mango</option>
+              <option value="pull">Pull and Bear</option>
+              <option value="gucci">Gucci</option>
+              <option value="gucci">Prada</option>
+            </select><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="range">Gasto:</label><br>
+            <input required type="number" id="range" name="range" maxlength="5" min="0" max="10000"><br>
+          </span>
+        </div>
+        <p class="submit">
+          <input class="submit__button" type="submit" value="Enviar">
+          <input  class="submit__button" type="reset" value="Borrar">
+        </p>
+      </form>
+    </section>
+  </div>
 </body>
 <footer>
   <div class="footer">
-      <p class="foot">Sakila ©</p>
+      <p class="footer__paraph">Sakila ©</p>
   </div>
 </footer>
 </html>

@@ -2,19 +2,35 @@
   --background-color: rgba(255, 246, 218, 0.781);
   --flex: 50%;
   --flex-2: 33%;
+  --nav-background: rgb(233, 118, 90);
+  --white: white;
+  --nav-item-hover: rgb(252, 126, 23);
+  --footer-color: rgba(216, 216, 216, 0.795);
+  --black: black;
+  --button-color: #E58100;
 }
 
-.body-carta {
+.body {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+
+}
+
+.container {
   background-color: var(--background-color);
+  margin: 0;
+  padding-bottom: 50px;
+}
+
+.section {
   margin: auto;
   text-align: center;
   width: 80%;
-  margin-top: 50px;
-  font-family: "Nunito", sans-serif;
+  padding-top: 50px;
   line-height: 30px;
 }
 
-.image {
+.section__img {
   margin-top: 30px;
   margin-bottom: 30px;
   width: 40%;
@@ -22,7 +38,7 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .image {
+  .section__img {
     margin-top: 30px;
     margin-bottom: 30px;
     width: 70%;
@@ -36,59 +52,67 @@
   flex-wrap: wrap;
 }
 
-.flex-item {
+.flex-container__flex-item {
   flex: var(--flex);
 }
 
-@media (max-width: 800px) {
-  .flex-item {
+@media (max-width: 700px) {
+  .flex-container__flex-item {
     flex: 100%;
   }
 }
 
-.body-home {
-    background-color: var(--background-color);
-    margin: 0;
-    font-family: "Nunito", sans-serif;
-}
-
-.topnav {
+.nav {
   list-style-type: none;
   margin: 0;
   overflow: hidden;
-  background-color: rgb(233, 118, 90);
+  background-color: var(--nav-background);
   margin-bottom: 0;
 }
 
-ul.topnav li {
-  float: left;
+.nav__item__logo{
+  width: 100px;
+  height: 60px;
+  vertical-align: middle;
+  padding-right: 20px;
 }
 
-ul.topnav li a {
+.nav__item {
+  float: left;
+  text-align: center
+}
+
+.nav__item__link {
   display: block;
-  color: white;
+  color: var(--white);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
 }
 
-ul.topnav li a:hover:not(.active) {
-  background-color: rgb(252, 126, 23);
+.nav__item__link:hover:not(.active) {
+  background-color: var(--nav-item-hover)
 }
 
 @media screen and (max-width: 600px) {
-  ul.topnav li {
+  .nav__item {
     float: none;
   }
 }
 
-.section-1 {
+.main-section {
     margin: auto;
     text-align: center;
     width: 80%;
-    margin-top: 50px;
+    padding-top: 50px;
     line-height: 30px;
   }
+
+  .paraph{
+      width: 90%;
+      margin: auto;
+  }
+
 
   .table{
     overflow-x: auto;
@@ -96,28 +120,13 @@ ul.topnav li a:hover:not(.active) {
     max-width: 100%;
   }
 
-  .flex-item ul {
+  .list {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
-  
 
-  .poster {
-    width: 25%;
-    float: left;
-  }
-  .name {
-    width: 50%;
-    float: left;
-  }
-
-  .rating {
-    width: 25%;
-    float: left;
-  }
-
-  .list li {
+  .list__item {
     padding: 8px;
     margin-bottom: 20px;
     display: flex;
@@ -125,59 +134,59 @@ ul.topnav li a:hover:not(.active) {
     align-items: center;
   }
 
-  .image2 { 
+  .list__item__poster {
+    width: 25%;
+    float: left;
+  }
+  .list__item__name {
+    width: 50%;
+    float: left;
+  }
+
+  .list__item__rating {
+    width: 25%;
+    float: left;
+  }
+
+  .list__item__poster__img { 
       width: 70%;
   }
 
-  .p-m{
-      width: 90%;
-      margin: auto;
-  }
-
-  .logo { 
-      text-align: center;
-  }
-
-  .logo img{
-      width: 100px;
-      height: 60px;
-      vertical-align: middle;
-  }
-
-  .footer {
-    height: 50px;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(216, 216, 216, 0.795);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    margin-top: 20px;
- }
-
- .foot{
-     padding-top: 10px;
- }
 
  .map{
      margin-top: 40px;
      text-align: center;
  }
   
-  .flex-form {
+  .footer {
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--footer-color);
+    color: var(--black);
+    text-align: center;
+    margin-top: -20px;
+ }
+
+ .footer__paraph{
+     padding-top: 10px;
+ }
+
+  .flex-container__input {
     flex: var(--flex-2);
     margin-top: 30px;
   }
   
   @media (max-width: 900px) {
-    .flex-form {
+    .flex-container__input {
       flex: 50%;
       margin-top: 30px;
     }
   }
 
   @media (max-width: 586px) {
-    .flex-form {
+    .flex-container__input {
       flex: 100%;
       margin-top: 30px;
     }
@@ -192,10 +201,10 @@ ul.topnav li a:hover:not(.active) {
       margin-bottom: 80px;
   }
 
-  input[type=button], input[type=submit], input[type=reset] {
-    background-color: #E58100;
+  .submit__button {
+    background-color: var(--button-color);
     border: none;
-    color: white;
+    color: var(--white);
     padding: 16px 32px;
     text-decoration: none;
     margin: 4px 2px;
