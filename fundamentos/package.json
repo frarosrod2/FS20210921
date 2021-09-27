@@ -1,17 +1,18 @@
 {
   "name": "fundamentos",
   "version": "1.0.0",
-  "description": "Ejemplos y ejercicios",
+  "description": "",
   "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-plugin-jasmine": "^4.1.2",
+    "init": "^0.1.2",
+    "jasmine-browser-runner": "^0.8.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Francisco Rosa",
-  "license": "ISC",
-  "dependencies": {
-    "bootstrap": "^5.1.1"
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0"
-  }
+  "author": "",
+  "license": "ISC"
 }
