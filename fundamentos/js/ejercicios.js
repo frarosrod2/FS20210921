@@ -15,7 +15,7 @@ function guessNumber() {
     let input = prompt("Adivina el número: ");
     if (input == randomNumber) {
       alert("¡Has encontrado la solución!");
-      return;
+      return randomNumber;
     } else if (input < randomNumber) {
       alert("El número introducido es menor que la solución");
       count++;
