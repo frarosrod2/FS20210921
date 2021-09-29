@@ -13,11 +13,12 @@ function Juego(count, random) {
   this.random = random;
   this.count = count;
   this.message = "";
+  this.encontrado = false;
 
   this.comparar = function (input) {
     if (input == this.random) {
       this.message = "¡Has adivinado el número!";
-      this.count = 10;
+      this.encontrado = true;
     } else if (input < this.random) {
       this.message = "El número introducido es menor a la solución";
       this.count++;
@@ -25,7 +26,7 @@ function Juego(count, random) {
       this.message = "El número introducido es mayor a la solución";
       this.count++;
     } else {
-      this.message = "Debe introducir un número";
+      this.message = `Debe introducir un número`;
       this.count++;
     }
   };
@@ -33,8 +34,8 @@ function Juego(count, random) {
 
 function guessNumber() {
   let juego = new Juego(0, randomRange(0, 100));
-  while (juego.count < 10) {
-    let input = prompt("Adivina el número: ");
+  while (juego.count < 10 && juego.encontrado==false) {
+    let input = prompt(`Adivina el número (${juego.count} de 10)`);
     juego.comparar(input);
     alert(juego.message);
   }
