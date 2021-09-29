@@ -16,31 +16,35 @@ function Juego(count, random) {
   this.encontrado = false;
 
   this.comparar = function (input) {
+    this.count++;
+    console.log("En comp", this.count);
+    count++;
     if (input == this.random) {
       this.message = "¡Has adivinado el número!";
       this.encontrado = true;
+    } else if (this.count > 9) {
+      this.message = "Te has quedado sin intentos";
+      this.count = 0;
     } else if (input < this.random) {
       this.message = "El número introducido es menor a la solución";
-      this.count++;
     } else if (input > this.random) {
       this.message = "El número introducido es mayor a la solución";
-      this.count++;
     } else {
       this.message = `Debe introducir un número`;
-      this.count++;
     }
   };
 }
 
 function guessNumber() {
   let juego = new Juego(0, randomRange(0, 100));
-  while (juego.count < 10 && juego.encontrado==false) {
+  while (juego.count < 10 && juego.encontrado == false) {
+    console.log("While", juego.count);
     let input = prompt(`Adivina el número (${juego.count} de 10)`);
     juego.comparar(input);
     alert(juego.message);
   }
   alert("Juego finalizado.");
-  guessNumber()
+  guessNumber();
 }
 
 function createArray(size, values) {

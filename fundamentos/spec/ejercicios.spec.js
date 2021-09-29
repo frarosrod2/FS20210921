@@ -29,33 +29,6 @@ describe("JavaScript tests", function () {
     expect(res).not.toBeNaN();
   });
 
-  it(`Guess number menor`, function () {
-    let juego = new Juego(0, 25);
-    juego.comparar(4);
-
-    expect(juego.message).toBe("El número introducido es menor a la solución");
-  });
-
-  it(`Guess number igual`, function () {
-    let juego = new Juego(0, 36);
-    juego.comparar(36);
-
-    expect(juego.message).toBe("¡Has adivinado el número!");
-  });
-
-  it(`Guess number mayor`, function () {
-    let juego = new Juego(0, 36);
-    juego.comparar(45);
-
-    expect(juego.message).toBe("El número introducido es mayor a la solución");
-  });
-
-  it(`Guess number fail`, function () {
-    let juego = new Juego(0, 36);
-    juego.comparar('fff');
-
-    expect(juego.message).toBe("Debe introducir un número");
-  });
 
   it(`create array test positive, caso ${[5, 6]}`, function () {
     let res = createArray(5, 6);
@@ -136,5 +109,36 @@ describe("JavaScript tests", function () {
     it(`isPalindrome test positive, caso ${caso}`, function () {
       expect(palindrome(caso)).toBeFalse();
     });
+  });
+});
+
+describe('Ejercicio 2', () => {
+  let juego = null;
+  const MAX_INTENTOS = 9
+
+  beforeAll(() => {
+    spyOn(Math, 'random').and.returnValues(0.83435)
+  })
+
+  beforeEach(() => {
+    juego = new Juego(0, randomRange(0,100));
+  })
+
+  it('Mayor', () => {
+    juego.comparar(83);
+
+    expect(juego.message).toBe("El número introducido es menor a la solución");
+    expect(juego.count).toBe(1)
+    expect(juego.encontrado).toBeFalse()
+  });
+
+  it('Intentos', () => {
+    for (let i = 0; i < MAX_INTENTOS; i++) {
+      juego.comparar(1)
+      expect(juego.count).toBe(i+1)
+    }
+
+    juego.comparar(1)
+    expect(juego.message).toBe("Te has quedado sin intentos");
   });
 });
