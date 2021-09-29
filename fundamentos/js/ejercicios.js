@@ -6,28 +6,40 @@ function randomRange(min, max) {
   if (isNumber(min) && isNumber(max)) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+  return "Rango introducido erróneo";
+}
+
+function Juego(count, random) {
+  this.random = random;
+  this.count = count;
+  this.message = "";
+
+  this.comparar = function (input) {
+    if (input == this.random) {
+      this.message = "¡Has adivinado el número!";
+      this.count = 10;
+    } else if (input < this.random) {
+      this.message = "El número introducido es menor a la solución";
+      this.count++;
+    } else if (input > this.random) {
+      this.message = "El número introducido es mayor a la solución";
+      this.count++;
+    } else {
+      this.message = "Debe introducir un número";
+      this.count++;
+    }
+  };
 }
 
 function guessNumber() {
-  let count = 0;
-  let randomNumber = randomRange(0, 100);
-  while (count < 10) {
+  let juego = new Juego(0, randomRange(0, 100));
+  while (juego.count < 10) {
     let input = prompt("Adivina el número: ");
-    if (input == randomNumber) {
-      alert("¡Has encontrado la solución!");
-      return randomNumber;
-    } else if (input < randomNumber) {
-      alert("El número introducido es menor que la solución");
-      count++;
-    } else if (input > randomNumber) {
-      alert("El número introducido es mayor que la solución");
-      count++;
-    } else {
-      alert("Debe introducir un número");
-      count++;
-    }
+    juego.comparar(input);
+    alert(juego.message);
   }
-  alert("Juego finalizado. No ha conseguido adivinar el número.");
+  alert("Juego finalizado.");
+  guessNumber()
 }
 
 function createArray(size, values) {
@@ -43,7 +55,7 @@ function isPrime(num) {
 function getPrimes(number) {
   let primes = [];
   if (isNumber(number) && Math.sign(number) === 1) {
-    for (var i = 0; i < 7919; i++) {
+    for (var i = 0; i < Infinity; i++) {
       if (primes.length === number) break;
       if (isPrime(i)) primes.push(i);
     }
@@ -85,21 +97,23 @@ function isNIF(dni) {
     ];
     var letraCorrecta = letras[numDNI % 23];
 
-    if (letraDNI != letraCorrecta) {
-      return false;
-    } else {
-      return true;
-    }
+    return letraDNI == letraCorrecta;
   }
   return false;
 }
 
 function palindrome(str) {
   if (typeof str === "string") {
-    var re = /[\W_]/g;
-    var lowRegStr = str.toLowerCase().replace(re, "");
-    var reverseStr = lowRegStr.split("").reverse().join("");
-    return reverseStr === lowRegStr;
+    let noAccent = str
+      .normalize("NFD")
+      .replace(
+        /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+        "$1"
+      )
+      .normalize();
+    const newStr = noAccent.replace(/[\W_]/g, "").toLowerCase();
+    const strReversed = newStr.split("").reverse().join("");
+    return newStr === strReversed;
   }
   return false;
 }

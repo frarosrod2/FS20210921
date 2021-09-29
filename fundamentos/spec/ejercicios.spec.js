@@ -1,18 +1,14 @@
 describe("JavaScript tests", function () {
-  it("isNumber test positive", function () {
-    let res = isNumber("4");
-    let res2 = isNumber(4);
-
-    expect(res).toBeTrue();
-    expect(res2).toBeTrue();
+  [2, 22, "55"].forEach((caso) => {
+    it(`isNumber test positive, caso ${caso}`, function () {
+      expect(isNumber(caso)).toBeTrue();
+    });
   });
 
-  it("isNumber test negative", function () {
-    let res = isNumber("ff");
-    let res2 = isNumber(undefined);
-
-    expect(res).not.toBeTrue();
-    expect(res2).not.toBeTrue();
+  ["fff", undefined, "ddd"].forEach((caso) => {
+    it(`isNumber test negative, caso ${caso}`, function () {
+      expect(isNumber(caso)).toBeFalse();
+    });
   });
 
   it("random range test positive", function () {
@@ -20,10 +16,9 @@ describe("JavaScript tests", function () {
       max = 100;
     let res = randomRange(min, max);
 
+    expect(res).not.toBeNaN();
     expect(res).toBeLessThanOrEqual(100);
     expect(res).toBeGreaterThanOrEqual(-10);
-    expect(res).not.toBeNaN();
-    expect(Number.isInteger(res)).toBeTrue();
   });
 
   it("random range test negative", function () {
@@ -34,20 +29,40 @@ describe("JavaScript tests", function () {
     expect(res).not.toBeNaN();
   });
 
-  it("create array test positive", function () {
-    let size = 5,
-      values = 6;
-    let size2 = "5",
-      values2 = "h";
-    let res = createArray(size, values);
-    let res2 = createArray(size2, values2);
+  it(`Guess number menor`, function () {
+    let juego = new Juego(0, 25);
+    juego.comparar(4);
+
+    expect(juego.message).toBe("El número introducido es menor a la solución");
+  });
+
+  it(`Guess number igual`, function () {
+    let juego = new Juego(0, 36);
+    juego.comparar(36);
+
+    expect(juego.message).toBe("¡Has adivinado el número!");
+  });
+
+  it(`Guess number mayor`, function () {
+    let juego = new Juego(0, 36);
+    juego.comparar(45);
+
+    expect(juego.message).toBe("El número introducido es mayor a la solución");
+  });
+
+  it(`Guess number fail`, function () {
+    let juego = new Juego(0, 36);
+    juego.comparar('fff');
+
+    expect(juego.message).toBe("Debe introducir un número");
+  });
+
+  it(`create array test positive, caso ${[5, 6]}`, function () {
+    let res = createArray(5, 6);
 
     expect(res).toHaveSize(5);
     expect(res).toEqual([6, 6, 6, 6, 6]);
     expect(Array.isArray(res)).toBeTrue();
-    expect(res2).toHaveSize(5);
-    expect(res2).toEqual(["h", "h", "h", "h", "h"]);
-    expect(Array.isArray(res2)).toBeTrue();
   });
 
   it("create array test negative", function () {
@@ -59,14 +74,16 @@ describe("JavaScript tests", function () {
     expect(res).toHaveSize(0);
   });
 
-  it("isPrime test", function () {
-    let number = 7;
-    let number2 = -12;
-    let res = isPrime(number);
-    let res2 = isPrime(number2);
+  ["7", 13, "37"].forEach((caso) => {
+    it(`isNumber test positive, caso ${caso}`, function () {
+      expect(isPrime(caso)).toBeTrue();
+    });
+  });
 
-    expect(res).toBeTrue();
-    expect(res2).toBeFalse();
+  ["ff", undefined].forEach((caso) => {
+    it(`isNumber test positive, caso ${caso}`, function () {
+      expect(isPrime(caso)).toBeFalse();
+    });
   });
 
   it("getPrimes test positive", function () {
@@ -75,6 +92,9 @@ describe("JavaScript tests", function () {
 
     expect(Array.isArray(res)).toBeTrue();
     expect(res).toHaveSize(15);
+    expect(res).toEqual([
+      2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
+    ]);
   });
 
   it("getPrimes test negative", function () {
@@ -85,33 +105,36 @@ describe("JavaScript tests", function () {
     expect(res).toHaveSize(0);
   });
 
-  it("isNIF test", function () {
-    let string = '84335016L';
-    let number = 1243423243;
-    let string2 = '4334334'
-    let res = isNIF(string);
-    let res2 = isNIF(number);
-    let res3 = isNIF(string2);
-
-    expect(res).toBeTrue();
-    expect(res2).toBeFalse();
-    expect(res3).toBeFalse();
+  ["84335016L", "69962440M"].forEach((caso) => {
+    it(`isNIF test positive, caso ${caso}`, function () {
+      expect(isNIF(caso)).toBeTrue();
+    });
   });
 
-  it("palindrome test", function () {
-    let word = 'reconocer';
-    let number = 124343;
-    let sentence = 'A Mercedes, ese de crema'
-    let sentence2 = 'A la catalana banal, atácala'
-    let res = palindrome(word);
-    let res2 = palindrome(sentence);
-    let res3 = palindrome(sentence2);
-    let res4 = palindrome(number);
-
-    expect(res).toBeTrue();
-    expect(res2).toBeTrue();
-    expect(res3).toBeFalse();
-    expect(res4).toBeFalse();
+  ["84335016C", "6996244D", 6546453343, undefined].forEach((caso) => {
+    it(`isNIF test negative, caso ${caso}`, function () {
+      expect(isNIF(caso)).toBeFalse();
+    });
   });
 
+  [
+    "reconocer",
+    "A Mercedes, ese de crema",
+    "A la catalana banal, atácala",
+  ].forEach((caso) => {
+    it(`isPalindrome test positive, caso ${caso}`, function () {
+      expect(palindrome(caso)).toBeTrue();
+    });
+  });
+
+  [
+    "ola",
+    "A Mercedesa, ese de crema",
+    "A la catalanda banal, atácala",
+    154848,
+  ].forEach((caso) => {
+    it(`isPalindrome test positive, caso ${caso}`, function () {
+      expect(palindrome(caso)).toBeFalse();
+    });
+  });
 });
