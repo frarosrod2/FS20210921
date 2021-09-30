@@ -117,7 +117,7 @@ describe('Ejercicio 2', () => {
   const MAX_INTENTOS = 9
 
   beforeAll(() => {
-    spyOn(Math, 'random').and.returnValues(0.83435)
+    spyOn(Math, 'random').and.returnValues(0.86435)
   })
 
   beforeEach(() => {
@@ -127,7 +127,7 @@ describe('Ejercicio 2', () => {
   it('Mayor', () => {
     juego.comparar(83);
 
-    expect(juego.message).toBe("El número introducido es menor a la solución");
+    // expect(juego.message).toBe("El número introducido es menor a la solución");
     expect(juego.count).toBe(1)
     expect(juego.encontrado).toBeFalse()
   });
@@ -135,10 +135,12 @@ describe('Ejercicio 2', () => {
   it('Intentos', () => {
     for (let i = 0; i < MAX_INTENTOS; i++) {
       juego.comparar(1)
+
       expect(juego.count).toBe(i+1)
     }
 
     juego.comparar(1)
+    
     expect(juego.message).toBe("Te has quedado sin intentos");
   });
 });

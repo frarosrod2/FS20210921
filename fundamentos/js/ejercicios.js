@@ -17,7 +17,6 @@ function Juego(count, random) {
 
   this.comparar = function (input) {
     this.count++;
-    console.log("En comp", this.count);
     count++;
     if (input == this.random) {
       this.message = "¡Has adivinado el número!";
@@ -38,7 +37,6 @@ function Juego(count, random) {
 function guessNumber() {
   let juego = new Juego(0, randomRange(0, 100));
   while (juego.count < 10 && juego.encontrado == false) {
-    console.log("While", juego.count);
     let input = prompt(`Adivina el número (${juego.count} de 10)`);
     juego.comparar(input);
     alert(juego.message);
