@@ -5,15 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DemosComponent } from './demos/demos.component';
+import { FormsModule } from '@angular/forms';
+import { ElipsisPipe } from './shared/string.pipe';
+import { SizerComponent } from './shared/sizer.component';
+import { DinamicoComponent } from './dinamico/dinamico.component';
+import { CalculatorComponent } from './calculator/calculator.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DemosComponent
+    DemosComponent,
+    ElipsisPipe,
+    SizerComponent,
+    DinamicoComponent,
+    CalculatorComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, FormsModule,
     AppRoutingModule
   ],
   providers: [],

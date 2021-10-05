@@ -1,0 +1,9 @@
+<p>
+  <button *ngFor="let item of menu; let indice=index" (click)="seleccionar(indice)">
+    {{item.texto}}
+  </button>
+</p>
+
+<div class="content-fluid">
+  <ng-container *ngComponentOutlet="actual"></ng-container>
+</div>
