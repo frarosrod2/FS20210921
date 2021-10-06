@@ -1,5 +1,7 @@
 import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { LoggerService } from 'src/lib/my-core';
+import { NotificationService } from '../common-services';
 
 @Component({
   selector: 'app-demos',
@@ -21,7 +23,14 @@ export class DemosComponent implements OnInit {
   estetica = { importante: true, error: false, urgente: true };
   fontSize = 14;
 
-  constructor() {}
+  // constructor(private log: LoggerService) {
+  //   log.error('Es un error')
+  //   log.warn('Es un warning')
+  //   log.info('Es un info')
+  //   log.log('Es un log')
+  // }
+
+  constructor(public vm: NotificationService) { }
 
   public get Nombre(): string {
     return this.nombre;

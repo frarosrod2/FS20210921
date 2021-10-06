@@ -1,5 +1,10 @@
 <h1>Hola {{ Nombre | elipsis:10 | uppercase}}</h1>
-
+<p>
+  <input type="button" value="Error" (click)="vm.add('Esto es una notifica
+ción de error')" >
+  <input type="button" value="Warn" (click)="vm.add('Esta notificación es
+un aviso', vm.NotificationType.warn)" >
+</p> 
 <p>
   <input type="text" [(ngModel)]="Nombre" />
   <input type="button" value="saluda" (click)="saluda()" />

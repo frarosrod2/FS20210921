@@ -5,13 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemosComponent } from './demos/demos.component';
 import { FormsModule } from '@angular/forms';
-import { MyCoreModule } from 'src/lib/my-core';
+import { MyCoreModule, LoggerService, ERROR_LEVEL } from 'src/lib/my-core';
 import { DinamicoComponent } from './dinamico/dinamico.component';
 import { CalculatorComponent } from './calculator/calculator.component';
 import { MainModule } from './main';
 import { CommonServicesModule } from './common-services';
 import { SecurityModule } from './security';
-
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { SecurityModule } from './security';
     AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule,
     SecurityModule
   ],
-  providers: [],
+  providers: [LoggerService,
+  {provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
