@@ -12,17 +12,22 @@ import { MainModule } from './main';
 import { CommonServicesModule } from './common-services';
 import { SecurityModule } from './security';
 import { environment } from 'src/environments/environment';
+import { FormularioComponent } from './formulario/formulario.component';
+import { ClienteFormularioComponent } from './cliente-formulario/cliente-formulario.component';
+import { CommonComponentModule } from './common-component/common-component.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     DemosComponent,
     DinamicoComponent,
-    CalculatorComponent
+    CalculatorComponent,
+    FormularioComponent,
+    ClienteFormularioComponent
   ],
   imports: [
     BrowserModule, FormsModule,
-    AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule,
+    AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule, CommonComponentModule,
     SecurityModule
   ],
   providers: [LoggerService,

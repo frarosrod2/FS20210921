@@ -1,0 +1,43 @@
+<div>
+  <input type="button" value="add" (click)="vm.add()">
+  <input type="button" value="edit" (click)="vm.edit()">
+</div>
+<form #miForm="ngForm">
+  <div>
+    <label for="id">Id: </label>
+    <input type="number" id="id" name="id" [(ngModel)]="vm.Elemento.id" #id="ngModel" required>
+    <output class="error" [hidden]="!id.hasError('required') || miForm.pristine">Es obligatorio</output>
+  </div>
+  <div>
+    <label for="nombre">Nombre: </label>
+    <input type="text" id="nombre" name="nombre" [(ngModel)]="vm.Elemento.nombre" #nombre="ngModel" required minlength="2" maxlength="10">
+    <output class="error" [hidden]="!nombre.errors?.required">Es obligatorio</output>
+    <output class="error" [hidden]="!nombre.errors?.minlength && !nombre.errors?.maxlength">Debe tener entre 2 y 10 letras</output>
+  </div>
+  <div>
+    <label for="apellidos">Apellidos: </label>
+    <input type="text" id="apellidos" name="apellidos" [(ngModel)]="vm.Elemento.apellidos" #apellidos="ngModel" minlength="2" maxlength="10">
+    <output class="error" [hidden]="!apellidos.errors?.minlength && !apellidos.errors?.maxlength">Debe tener entre 2 y 10 letras</output>
+
+  </div>
+  <div>
+    <label for="correo">Correo: </label>
+    <input type="email" id="correo" name="correo" [(ngModel)]="vm.Elemento.correo" #correo="ngModel" maxlength="30" email>
+    <output class="error" [hidden]="!correo.errors?.required">No es un correo electrónico válido.</output>
+  </div>
+  <div>
+    <label for="edad">Edad: </label>
+    <input type="number" id="edad" name="edad" [(ngModel)]="vm.Elemento.edad" #edad="ngModel" min="16" max="67">
+    <output class="error" [hidden]="!edad.errors?.min">Debe tener al menos {{edad.errors?.min?.min}} años.</output>
+    <output class="error" [hidden]="!edad.errors?.max">Debe tener menos de {{edad.errors?.max?.max}}  años.</output>
+  </div>
+  <div>
+    <label for="dni">DNI: </label>
+    <input type="dni" id="dni" name="dni" [(ngModel)]="vm.Elemento.dni" #dni="ngModel" >
+  </div>
+  <div>
+    <input type="button" value="enviar" (click)="vm.send()" [disabled]="miForm.invalid">
+    <input type="button" value="volver" (click)="vm.cancel()">
+  </div>
+</form>
+

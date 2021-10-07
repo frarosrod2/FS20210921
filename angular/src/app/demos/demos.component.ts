@@ -25,10 +25,10 @@ export class DemosComponent implements OnInit {
 
 
   constructor(public vm: NotificationService, private log: LoggerService) {
-    log.error('Es un error')
-    log.warn('Es un warning')
-    log.info('Es un info')
-    log.log('Es un log')
+    // log.error('Es un error')
+    // log.warn('Es un warning')
+    // log.info('Es un info')
+    // log.log('Es un log')
   }
 
   public get Nombre(): string {

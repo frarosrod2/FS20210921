@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+  <title>Formulario</title>
+</head>
+<body class="body">
+  <div class="container">
+    <section class="section">
+      <h3><strong>Formulario de registro de cliente</strong></h3>
+      <form #miForm="ngForm">
+        <div class="flex-container">
+          <span class="flex-container__input">
+            <label for="name">Nombre*: </label><br>
+            <input id="name" #name="ngModel" [(ngModel)]="vm.Elemento.name" type="text" name="name" size="30" minlength="3" maxlength="30" required><br>
+            <errors-messages [errors]="name.errors"></errors-messages>
+          </span>
+          <span class="flex-container__input">
+            <label for="surname">Apellidos*: </label><br>
+            <input [(ngModel)]="vm.Elemento.surname" #surname="ngModel" required id="surname" type="text" name="surname" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label required for="email">Email*: </label><br>
+            <input email [(ngModel)]="vm.Elemento.email" #email="ngModel" id="email" type="email" name="email" size="30" maxlength="30">
+          </span>
+        <br>
+          <span class="flex-container__input">
+            <label for="born">Fecha de nacimiento *: </label><br>
+            <input [(ngModel)]="vm.Elemento.birth" #birth="ngModel" required id="born" type="date" name="born" min="1900-01-01" max="2005-01-01" ><br>
+          </span>
+          <span class="flex-container__input">
+            <label>Sexo*:</label><br>
+            <input [(ngModel)]="vm.Elemento.gender" #gender="ngModel" id="h" type="radio" checked name="mh" value="h">
+            <label for="h">Hombre: </label><br>
+            <input [(ngModel)]="vm.Elemento.gender" #gender="ngModel" id="m" type="radio" name="mh" value="m">
+            <label for="m">Mujer: </label><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="addr">Dirección: </label><br>
+            <input [(ngModel)]="vm.Elemento.address" #address="ngModel" id="addr" type="text" name="addr" size="30" maxlength="40"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="city">Ciudad*: </label><br>
+            <input [(ngModel)]="vm.Elemento.city" #city="ngModel" id="city" type="text" name="city" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="coun">País*: </label><br>
+            <input [(ngModel)]="vm.Elemento.country" #country="ngModel" required id="coun" type="text" name="country" size="30" maxlength="30"><br>
+          </span>
+          <span class="flex-container__input">
+            <label for="cp">Código postal: </label><br>
+            <input [(ngModel)]="vm.Elemento.postal" #postal="ngModel" id="cp" type="number" name="cp" min="1" max="99999"><br>
+          </span>
+          </div>
+      </form>
+    </section>
+  </div>
+</body>
+<costumer-buttons [dis]="miForm.invalid" (send)="vm.send()"></costumer-buttons>
+<footer>
+  <div class="footer">
+      <p>Sakila ©</p>
+  </div>
+</footer>
+</html>
