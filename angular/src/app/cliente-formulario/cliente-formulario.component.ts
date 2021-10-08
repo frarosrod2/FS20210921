@@ -12,6 +12,7 @@ export interface Client {
   city: string | null;
   country: string;
   postal: string | null;
+  iban: string;
 }
 
 
@@ -32,6 +33,7 @@ export class CostumerViewModel {
     city: null,
     country: '',
     postal: null,
+    iban: ''
   };
 
   public send() {

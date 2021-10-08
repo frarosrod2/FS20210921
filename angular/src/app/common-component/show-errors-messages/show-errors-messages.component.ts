@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'errors-messages',
@@ -10,43 +10,39 @@ export class ShowErrorsMessagesComponent implements OnInit {
   required: boolean = false;
   minlength: string = '';
 
-  object() {
-    let list = []
+  list:string[] = []
+
+  ngOnchanges(changes: SimpleChanges): void {
     if(this.errors !== null){
     for (let key of Object.keys(this.errors)) {
       console.log(key)
       switch (key) {
         case 'required':
-          list.push('Campo requerido')
+          this.list.push('Campo requerido')
           break;
         case 'minlength':
-          list.push(`El campo debe ser mayor a ${this.errors[key]["requiredLength"]} caracteres`)
+          this.list.push(`El campo debe ser mayor a ${this.errors[key]["requiredLength"]} caracteres`)
           break;
           case 'maxlength':
-            list.push(`El campo debe ser menor a ${this.errors[key]["requiredLength"]} caracteres`)
+            this.list.push(`El campo debe ser menor a ${this.errors[key]["requiredLength"]} caracteres`)
             break;
           case 'email':
-            list.push(`Debe tener formato email`)
+            this.list.push(`Debe tener formato email`)
             break;
           case 'max':
-            list.push(`El mayor número permitido es ${this.errors[key]["max"]}`)
+            this.list.push(`El mayor número permitido es ${this.errors[key]["max"]}`)
+            break;
+          case 'iban':
+            console.log('SSSSS')
+            this.list.push('Iban incorrecto')
             break;
         default:
           break;
       }
     }
-    return list
   }
-  return []
+  this.list = []
 }
-
-  init(value: any){
-
-  }
-
-  json() {
-    return JSON.stringify(this.errors);
-  }
 
   constructor() {}
 

@@ -1,20 +1,21 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Client, ClienteFormularioComponent } from 'src/app/cliente-formulario/cliente-formulario.component';
-import { NotificationService, NotificationType } from 'src/app/common-services';
 
 @Component({
   selector: 'costumer-buttons',
   template: `
     <div class="costumer-buttons">
       <input type="submit" [disabled]="dis" (click)="send.emit(null)" value="Enviar">
-      <input type="reset" value="Cancelar">
+      <button class="btn btn-danger" *ngIf="hasDelete" (click)="delete.emit(null)"><i class="far fa-trash-alt"> borrar</i></button>
+
     </div>`
 })
 export class FormCostumerButtons {
 
   @Input() dis: any;
   @Output() send: EventEmitter<any> = new EventEmitter();
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
 
+  get hasDelete(): boolean { return this.delete.observers.length > 0; }
 
   constructor() {
   }

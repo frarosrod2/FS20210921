@@ -15,7 +15,7 @@
         <div class="flex-container">
           <span class="flex-container__input">
             <label for="name">Nombre*: </label><br>
-            <input id="name" #name="ngModel" [(ngModel)]="vm.Elemento.name" type="text" name="name" size="30" minlength="2" maxlength="30" required><br>
+            <input [errors]="name.errors" id="name" #name="ngModel" [(ngModel)]="vm.Elemento.name" type="text" name="name" size="30" minlength="2" maxlength="30" required ><br>
             <errors-messages [errors]="name.errors"></errors-messages>
           </span>
           <span class="flex-container__input">
@@ -62,6 +62,11 @@
             <input [(ngModel)]="vm.Elemento.postal" #postal="ngModel" id="cp" type="number" name="cp" min="1" max="99999"><br>
             <errors-messages [errors]="postal.errors"></errors-messages>
           </span>
+          </div>
+          <div>
+            <label for="iban">IBAN</label>
+            <input type="text" id="iban" name="iban" [(ngModel)]="vm.Elemento.iban" #iban="ngModel" iban>
+            <app-show-errors-messages [errors]="iban.errors"></app-show-errors-messages>
           </div>
       </form>
     </section>
