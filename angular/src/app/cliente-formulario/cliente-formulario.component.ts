@@ -51,7 +51,12 @@ export class ClienteFormularioComponent implements OnInit {
 
   constructor(public vm: CostumerViewModel) { }
 
+  olddate: any;
+  newdate: any;
   ngOnInit(): void {
+    this.olddate = new Date("1900-01-01").toISOString().slice(0, 10)
+    this.newdate = new Date("2005-01-01").toISOString().slice(0, 10)
+
   }
 
 }

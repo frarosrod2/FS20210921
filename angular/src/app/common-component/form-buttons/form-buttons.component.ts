@@ -5,8 +5,8 @@ import { NotificationService, NotificationType } from 'src/app/common-services';
 @Component({
   selector: 'costumer-buttons',
   template: `
-    <div>
-      <button [disabled]="dis" (click)="send.emit(null)">Enviar</button>
+    <div class="costumer-buttons">
+      <input type="submit" [disabled]="dis" (click)="send.emit(null)" value="Enviar">
       <input type="reset" value="Cancelar">
     </div>`
 })

@@ -1,3 +1,5 @@
-
-<ng-container >{{object()}}
+<ng-container *ngFor="let item of object()">
+  <div class="output">
+    <span class="error-font">{{ item }}</span>
+  </div>
 </ng-container>

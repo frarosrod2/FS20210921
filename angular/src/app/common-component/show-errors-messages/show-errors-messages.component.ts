@@ -11,22 +11,33 @@ export class ShowErrorsMessagesComponent implements OnInit {
   minlength: string = '';
 
   object() {
+    let list = []
     if(this.errors !== null){
     for (let key of Object.keys(this.errors)) {
       console.log(key)
       switch (key) {
         case 'required':
-          return 'Campo requerido'
+          list.push('Campo requerido')
+          break;
         case 'minlength':
-          return `El campo debe ser mayor a ${this.errors[key]["requiredLength"]} caracteres`
+          list.push(`El campo debe ser mayor a ${this.errors[key]["requiredLength"]} caracteres`)
+          break;
           case 'maxlength':
-            return `El campo debe ser menor a ${this.errors[key]["requiredLength"]} caracteres`
+            list.push(`El campo debe ser menor a ${this.errors[key]["requiredLength"]} caracteres`)
+            break;
+          case 'email':
+            list.push(`Debe tener formato email`)
+            break;
+          case 'max':
+            list.push(`El mayor número permitido es ${this.errors[key]["max"]}`)
+            break;
         default:
-          return '';
+          break;
       }
     }
+    return list
   }
-  return ''
+  return []
 }
 
   init(value: any){
