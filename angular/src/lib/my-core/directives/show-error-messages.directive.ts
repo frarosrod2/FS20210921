@@ -1,54 +1,53 @@
 import {
   Directive,
   Input,
-  Output,
-  HostListener,
-  EventEmitter,
   HostBinding,
   SimpleChanges,
+  OnChanges,
 } from '@angular/core';
-import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
-import { ShowErrorsMessagesComponent } from 'src/app/common-component/show-errors-messages/show-errors-messages.component';
-import { UppercaseValidator } from './validadores.directive';
 
+@Directive({ selector: '[myShowErrors]' })
+export class ShowErrorMessagesDirective implements OnChanges {
+  @Input('myShowErrors') errors: any = undefined;
+  @HostBinding('textContent') mensaje: string = '';
+  @HostBinding('hidden') hidden: boolean = false;
 
-export function test(errors: any): string {
+ngOnChanges(changes: SimpleChanges): void {
   let message = ''
-  if(errors !== null){
-  for (let key of Object.keys(errors)) {
+  if(this.errors){
+  for (let key of Object.keys(this.errors)) {
     switch (key) {
       case 'required':
         message = 'Campo requerido'
         break;
       case 'minlength':
-        message = `El campo debe ser mayor a ${errors[key]["requiredLength"]} caracteres`
+        message = `El campo debe ser mayor a ${this.errors[key]["requiredLength"]} caracteres`
         break;
         case 'maxlength':
-          message = `El campo debe ser menor a ${errors[key]["requiredLength"]} caracteres`
+          message = `El campo debe ser menor a ${this.errors[key]["requiredLength"]} caracteres`
           break;
         case 'email':
           message = `Debe tener formato email`
           break;
         case 'max':
-          message = `El mayor número permitido es ${errors[key]["max"]}`
+          message = `El mayor número permitido es ${this.errors[key]["max"]}`
           break;
       default:
-        break;
+        if (typeof this.errors[key] === 'string')
+            message += `${this.errors[key]}${this.errors[key].endsWith('.')?'':'.'} `;
+          else if (typeof this.errors[key]?.message === 'string')
+            message += `${this.errors[key].message}${this.errors[key].message.endsWith('.')?'':'.'} `;
+          break;
     }
   }
+  this.mensaje = message
+  this.hidden = this.mensaje === '';
+}else{
+  this.hidden = true;
+  return;
 }
-  return message
 }
 
-@Directive({ selector: `[errors]`,
-providers: [{ provide: NG_VALIDATORS, useExisting: ShowErrorMessagesDirective, multi: true }]
-})
-export class ShowErrorMessagesDirective implements Validator {
-  @Input() errors: any;
-
-validate(control: AbstractControl): ValidationErrors | null {
-  return {name: test(this.errors)}
-}
 
 }
 
