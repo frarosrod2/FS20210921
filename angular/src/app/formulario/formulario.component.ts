@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RESTDAOService } from '../base-code/RESTDAOService';
 import { NotificationService, NotificationType } from '../common-services';
 
 export interface Persona {
@@ -9,6 +12,13 @@ export interface Persona {
   correo: string | null;
   edad: number | null;
   dni: string | null;
+}
+
+@Injectable({ providedIn: 'root' })
+export class PersonasDAO extends RESTDAOService<Persona, number> {
+  constructor(http: HttpClient) {
+    super(http, 'personas');
+  }
 }
 
 @Injectable({ providedIn: 'root' })
@@ -33,9 +43,7 @@ export class ClientsViewModel {
   };
   isAdd = true;
 
-  constructor(private notify: NotificationService) {
-    this.add();
-  }
+  constructor(private notify: NotificationService, private dao: PersonasDAO) {}
 
   public list() {}
 
@@ -52,8 +60,14 @@ export class ClientsViewModel {
   }
 
   public edit() {
-    this.Elemento = this.Listado[0];
-    this.isAdd = false;
+    if (this.Elemento.id)
+      this.dao.get(this.Elemento.id).subscribe(
+        (data) => {
+          this.Elemento = data;
+          this.isAdd = false;
+        },
+        (err) => this.notify.add(err.message)
+      );
   }
 
   public view() {
@@ -66,11 +80,20 @@ export class ClientsViewModel {
   public cancel() {}
 
   public send() {
-    this.notify.add(
-      (this.isAdd ? 'Nuevos: ' : 'Modificados: ') +
-        JSON.stringify(this.Elemento),
-      NotificationType.info
-    );
+    let peticion: Observable<any> | undefined = undefined;
+    if (this.isAdd) peticion = this.dao.add(this.Elemento);
+    else if (this.Elemento.id)
+      peticion = this.dao.change(this.Elemento.id, this.Elemento);
+    if (peticion)
+      peticion.subscribe(
+        (data) => this.notify.add('OK', NotificationType.info),
+        (err) => this.notify.add(err.message)
+      );
+    // this.notify.add(
+    //   (this.isAdd ? 'Nuevos: ' : 'Modificados: ') +
+    //     JSON.stringify(this.Elemento),
+    //   NotificationType.info
+    // );
   }
 }
 

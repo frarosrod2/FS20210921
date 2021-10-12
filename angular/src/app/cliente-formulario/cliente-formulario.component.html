@@ -19,6 +19,7 @@
             <span class="flex-container__input">
               <label for="name">Nombre*: </label><br />
               <input
+                notblank
                 id="name"
                 #name="ngModel"
                 [(ngModel)]="vm.Elemento.name"
@@ -162,8 +163,30 @@
                 [(ngModel)]="vm.Elemento.iban"
                 #iban="ngModel"
                 iban
-              /><br>
+              /><br />
               <output [myShowErrors]="iban.errors"></output>
+            </span>
+            <span class="flex-container__input">
+              <fieldset>
+                <legend>Comparaciones</legend>
+                <input
+                  type="number"
+                  name="origen"
+                  [(ngModel)]="test.origen"
+                  #origen="ngModel"
+                />
+                <output class="error" [myShowErrors]="origen.errors"></output>
+                <input
+                  type="number"
+                  name="destino"
+                  [(ngModel)]="test.destino"
+                  #destino="ngModel"
+                  lessThan="origen"
+                  exclude-start="2"
+                  exclude-end="8"
+                />
+                <output class="error" [myShowErrors]="destino.errors"></output>
+              </fieldset>
             </span>
           </div>
         </form>

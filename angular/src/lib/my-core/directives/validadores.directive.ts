@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import {
   AbstractControl,
   NG_VALIDATORS,
@@ -31,7 +31,7 @@ export class UppercaseValidator {
   }
 }
 
-const ibanRegexThroughCountryCode: {[key: string]: RegExp} = {
+const ibanRegexThroughCountryCode: { [key: string]: RegExp } = {
   AD: /^(AD[0-9]{2})\d{8}[A-Z0-9]{12}$/,
   AE: /^(AE[0-9]{2})\d{3}\d{16}$/,
   AL: /^(AL[0-9]{2})\d{8}[A-Z0-9]{16}$/,
@@ -128,29 +128,35 @@ function hasValidIbanFormat(str: string) {
   const strippedStr = str.replace(/[\s\-]+/gi, '').toUpperCase();
   const isoCountryCode = strippedStr.slice(0, 2).toUpperCase();
 
-  return (isoCountryCode in ibanRegexThroughCountryCode) &&
-    ibanRegexThroughCountryCode[isoCountryCode].test(strippedStr);
+  return (
+    isoCountryCode in ibanRegexThroughCountryCode &&
+    ibanRegexThroughCountryCode[isoCountryCode].test(strippedStr)
+  );
 }
 
 /**
-   * Check whether string has valid IBAN Checksum
-   * by performing basic mod-97 operation and
-   * the remainder should equal 1
-   * -- Start by rearranging the IBAN by moving the four initial characters to the end of the string
-   * -- Replace each letter in the string with two digits, A -> 10, B = 11, Z = 35
-   * -- Interpret the string as a decimal integer and
-   * -- compute the remainder on division by 97 (mod 97)
-   * Reference: https://en.wikipedia.org/wiki/International_Bank_Account_Number
-   *
-   * @param {string} str
-   * @return {boolean}
-   */
+ * Check whether string has valid IBAN Checksum
+ * by performing basic mod-97 operation and
+ * the remainder should equal 1
+ * -- Start by rearranging the IBAN by moving the four initial characters to the end of the string
+ * -- Replace each letter in the string with two digits, A -> 10, B = 11, Z = 35
+ * -- Interpret the string as a decimal integer and
+ * -- compute the remainder on division by 97 (mod 97)
+ * Reference: https://en.wikipedia.org/wiki/International_Bank_Account_Number
+ *
+ * @param {string} str
+ * @return {boolean}
+ */
 function hasValidIbanChecksum(str: string) {
   const strippedStr = str.replace(/[^A-Z0-9]+/gi, '').toUpperCase(); // Keep only digits and A-Z latin alphabetic
   const rearranged = strippedStr.slice(4) + strippedStr.slice(0, 4);
-  const alphaCapsReplacedWithDigits = rearranged.replace(/[A-Z]/g, char => (char.charCodeAt(0) - 55).toString());
+  const alphaCapsReplacedWithDigits = rearranged.replace(/[A-Z]/g, (char) =>
+    (char.charCodeAt(0) - 55).toString()
+  );
 
-  const remainder = alphaCapsReplacedWithDigits.match(/\d{1,7}/g)?.reduce((acc, value) => Number(acc + value) % 97, 0);
+  const remainder = alphaCapsReplacedWithDigits
+    .match(/\d{1,7}/g)
+    ?.reduce((acc, value) => Number(acc + value) % 97, 0);
   return remainder === 1;
 }
 
@@ -160,7 +166,9 @@ export function isIBAN(str: string) {
 
 export function IBANValidation(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    if (!control.value) { return null; }
+    if (!control.value) {
+      return null;
+    }
 
     return isIBAN(control.value) ? null : { iban: 'No es un IBAN valido' };
   };
@@ -178,4 +186,102 @@ export class IBANValidator implements Validator {
   }
 }
 
-export const MIS_VALIDADORES = [IBANValidator];
+export function NIFValidation(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (!control.value) {
+      return null;
+    }
+    const err = {
+      nif: {
+        invalidFormat: true,
+        invalidChar: true,
+        message: 'No es un NIF valido',
+      },
+    };
+    if (/^\d{1,8}\w$/.test(control.value)) {
+      const letterValue = control.value.substr(control.value.length - 1);
+      const numberValue = control.value.substr(0, control.value.length - 1);
+      err.nif.invalidFormat = false;
+      return letterValue.toUpperCase() ===
+        'TRWAGMYFPDXBNJZSQVHLCKE'.charAt(numberValue % 23)
+        ? null
+        : err;
+    } else {
+      return err;
+    }
+  };
+}
+@Directive({
+  selector: '[nif][formControlName],[nif][formControl],[nif][ngModel]',
+  providers: [
+    { provide: NG_VALIDATORS, useExisting: NIFValidator, multi: true },
+  ],
+})
+export class NIFValidator implements Validator {
+  validate(control: AbstractControl): ValidationErrors | null {
+    return NIFValidation()(control);
+  }
+}
+
+@Directive({
+  selector: '[type][formControlName],[type][formControl],[type][ngModel]',
+  providers: [
+    { provide: NG_VALIDATORS, useExisting: TypeValidator, multi: true },
+  ],
+})
+export class TypeValidator implements Validator {
+  constructor(private elem: ElementRef) {}
+  validate(control: AbstractControl): ValidationErrors | null {
+    const valor = control.value;
+    if (valor) {
+      const dom = this.elem.nativeElement;
+      if (dom.validity) {
+        // dom.checkValidity();
+        return dom.validity.typeMismatch
+          ? { type: dom.validationMessage }
+          : null;
+      }
+    }
+    return null;
+  }
+}
+
+export function ExcludeValidation(start: any, end: any): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) { return null; }
+    if(!start) throw new Error("Falta el valor de inicio del rango")
+    if(!end) throw new Error("Falta el valor de finalización del rango")
+    return control.value < (start) || (control.value) > (end) ? null : { exclude: `Tiene que ser menor que ${start} o mayor que ${end}` }
+  };
+}
+
+@Directive({
+  selector: '[exclude-start][formControlName],[exclude-start][formControl],[exclude-start][ngModel],[formControlName],[exclude-end][formControl],[exclude-end][ngModel]',
+//  selector: '[exclude-start][exclude-end][formControlName],[exclude-start][exclude-end][formControl],[exclude-start][exclude-end][ngModel]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: ExcludeValidator, multi: true }]
+})
+export class ExcludeValidator implements Validator {
+  @Input('exclude-start') start: any;
+  @Input('exclude-end') end: any;
+  validate(control: AbstractControl): ValidationErrors | null {
+    return ExcludeValidation(this.start, this.end)(control);
+  }
+}
+
+export function NotBlankValidation(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+     return control.value?.trim() ? null : { notblank: 'No puede estar en blanco' }
+  };
+}
+
+@Directive({
+  selector: '[notblank]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: NotBlankValidator, multi: true }]
+})
+export class NotBlankValidator implements Validator {
+  validate(control: AbstractControl): ValidationErrors | null {
+    return NotBlankValidation()(control);
+  }
+}
+
+export const MIS_VALIDADORES = [IBANValidator, UppercaseValidator, NIFValidator, TypeValidator, ExcludeValidator, NotBlankValidator];

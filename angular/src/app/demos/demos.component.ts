@@ -1,14 +1,15 @@
 import { ThrowStmt } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Unsubscribable } from 'rxjs';
 import { LoggerService } from 'src/lib/my-core';
-import { NotificationService } from '../common-services';
+import { NotificationService, NotificationType } from '../common-services';
 
 @Component({
   selector: 'app-demos',
   templateUrl: './demos.component.html',
   styleUrls: ['./demos.component.scss'],
 })
-export class DemosComponent implements OnInit {
+export class DemosComponent implements OnInit, OnDestroy {
   private nombre: string = 'mundo';
   listado = [
     { id: 1, nombre: 'Madrid' },
@@ -22,7 +23,7 @@ export class DemosComponent implements OnInit {
   visible = true;
   estetica = { importante: true, error: false, urgente: true };
   fontSize = 14;
-
+  private suscriptor: Unsubscribable | undefined;
 
   constructor(public vm: NotificationService, private log: LoggerService) {
     // log.error('Es un error')
@@ -67,5 +68,17 @@ export class DemosComponent implements OnInit {
     this.idProvincia = id;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.suscriptor = this.vm.Notification.subscribe(n => {
+      if(n.Type !== NotificationType.error){return;}
+      window.alert(`Suscripcion ${n.Message}`);
+      this.vm.remove(this.vm.Listado.length - 1);
+    })
+  }
+
+  ngOnDestroy(): void {
+    if(this.suscriptor){
+      this.suscriptor.unsubscribe();
+    }
+  }
 }
