@@ -32,6 +32,11 @@ export class CostumerViewModel {
     iban: '',
   };
 
+
+  public cancel() {
+
+  }
+
   public send() {
     this.notify.add(
       'Datos enviados:' + JSON.stringify(this.Elemento),

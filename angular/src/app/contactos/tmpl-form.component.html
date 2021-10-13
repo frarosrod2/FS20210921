@@ -22,6 +22,8 @@
         <option>Excma.</option>
       </select>
     </div>
+  </div>
+  <div class="form-row">
     <div class="form-group col-md-4">
       <label class="form-label" for="nombre">Nombre:</label>
       <input class="form-control" [class.is-invalid]="nombre.invalid" type="text" name="nombre" id="nombre"
@@ -88,9 +90,5 @@
         <output [myShowErrors]="avatar.errors"></output>
       </div>
     </div>
-    <div class="form-group buttons">
-      <input type="button" class="btn btn-success" value="Enviar" (click)="VM.send()"
-           [disabled]="miForm.invalid">
-      <input type="button" class="btn btn-info" value="Volver" (click)="VM.cancel()">
-    </div>
+    <app-form-buttons (send)="VM.send()" [send-disabled]="miForm.invalid" (cancel)="VM.cancel()"></app-form-buttons>
   </form>

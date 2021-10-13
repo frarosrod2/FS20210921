@@ -193,10 +193,8 @@
       </section>
     </div>
   </body>
-  <costumer-buttons
-    [dis]="miForm.invalid"
-    (send)="vm.send()"
-  ></costumer-buttons>
+  <app-form-buttons (send)="vm.send()" [send-disabled]="miForm.invalid" (cancel)="vm.cancel()"></app-form-buttons>
+
   <footer>
     <div class="footer">
       <p>Sakila ©</p>

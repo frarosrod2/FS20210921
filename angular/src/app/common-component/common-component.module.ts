@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormCostumerButtons } from './form-buttons/form-buttons.component';
 import { ShowErrorsMessagesComponent } from './show-errors-messages/show-errors-messages.component';
+import { FormButtonsComponent } from '.';
 
 
 
 @NgModule({
   declarations: [
-    FormCostumerButtons,
+    FormButtonsComponent,
     ShowErrorsMessagesComponent
   ],
-  exports: [FormCostumerButtons, ShowErrorsMessagesComponent],
+  exports: [FormButtonsComponent, ShowErrorsMessagesComponent],
   imports: [
     CommonModule
   ]

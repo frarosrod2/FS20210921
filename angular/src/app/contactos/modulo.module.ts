@@ -8,6 +8,7 @@ import { CONTACTOS_COMPONENTES } from './componente.component';
 import { NotificationComponent } from '../main/notification/notification.component';
 import { AppModule } from '../app.module';
 import { MainModule } from '../main';
+import { CommonComponentModule } from '../common-component/common-component.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { MainModule } from '../main';
     FormsModule,
     RouterModule.forChild([]),
     MyCoreModule,
-    CommonServicesModule, MainModule
+    CommonServicesModule, MainModule, CommonComponentModule
   ],
   exports: [CONTACTOS_COMPONENTES],
 })
