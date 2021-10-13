@@ -23,8 +23,11 @@ export class ContactosDAOService extends RESTDAOService<any, any> {
 export class ContactosViewModelService {
   protected modo: ModoCRUD = 'list';
   protected listado: Array<any> = [];
+  protected datos: Array<any> = [];
   protected elemento: any = {};
   protected idOriginal: any = null;
+  protected itemsPerPage: number = 10;
+  protected allPages: number =100;
 
   constructor(
     protected notify: NotificationService,
@@ -38,15 +41,30 @@ export class ContactosViewModelService {
   public get Listado(): Array<any> {
     return this.listado;
   }
+
+  public get Datos(): Array<any> {
+    return this.listado;
+  }
+
   public get Elemento(): any {
     return this.elemento;
+  }
+
+  public get ItemsPerPage(): any {
+    return this.itemsPerPage;
+  }
+
+  public get AllPages(): any {
+    return this.allPages;
   }
 
   public list(): void {
     this.dao.query().subscribe(
       (data) => {
-        this.listado = data;
+        this.datos = data;
         this.modo = 'list';
+        this.allPages = Math.ceil(data.length / this.itemsPerPage);
+        this.listado = this.datos.slice(0, this.itemsPerPage);
       },
       (err) => this.notify.add(err.message)
     );
@@ -96,6 +114,12 @@ export class ContactosViewModelService {
     this.elemento = {};
     this.idOriginal = null;
     this.list();
+  }
+
+  public onPageChange(page: number = 1): void {
+    const startItem = (page - 1) * this.itemsPerPage;
+    const endItem = page * this.itemsPerPage;
+    this.listado = this.datos.slice(startItem, endItem);
   }
 
   public send(): void {
