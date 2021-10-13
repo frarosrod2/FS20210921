@@ -75,7 +75,16 @@ export class ClientsViewModel {
     this.isAdd = false;
   }
 
-  public delete() {}
+  public delete() {
+    if (this.Elemento.id)
+      this.dao.get(this.Elemento.id).subscribe(
+        (data) => {
+          this.Elemento = data;
+          this.isAdd = false;
+        },
+        (err) => this.notify.add(err.message)
+      );
+  }
 
   public cancel() {}
 

@@ -284,4 +284,21 @@ export class NotBlankValidator implements Validator {
   }
 }
 
-export const MIS_VALIDADORES = [IBANValidator, UppercaseValidator, NIFValidator, TypeValidator, ExcludeValidator, NotBlankValidator];
+export function IsNumberValidation(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+     return isNaN(control.value) ? { isnumber: 'No es un número' } : null
+  };
+}
+
+@Directive({
+  selector: '[isnumber][formControlName],[isnumber][formControl],[isnumber][ngModel]',
+  providers: [{ provide: NG_VALIDATORS, useExisting: IsNumberValidator, multi: true }]
+})
+export class IsNumberValidator implements Validator {
+  validate(control: AbstractControl): ValidationErrors | null {
+    return IsNumberValidation()(control);
+  }
+}
+
+
+export const MIS_VALIDADORES = [IBANValidator, UppercaseValidator, NIFValidator, TypeValidator, ExcludeValidator, NotBlankValidator, IsNumberValidator];
