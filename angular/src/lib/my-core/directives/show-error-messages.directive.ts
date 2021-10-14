@@ -32,6 +32,9 @@ export class ShowErrorMessagesDirective implements OnChanges {
           case 'max':
             message = `El mayor número permitido es ${this.errors[key]['max']}`;
             break;
+          case 'min':
+            message = `El menor número permitido es ${this.errors[key]['min']}`;
+            break;
           default:
             if (typeof this.errors[key] === 'string')
               message += `${this.errors[key]}${

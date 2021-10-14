@@ -64,7 +64,7 @@ export class BotonesComponent implements OnInit, OnDestroy {
 
 @Component({
   selector: 'app-libros-list',
-  templateUrl: './tmpl-list.con-rutas.component.html',
+  templateUrl: './tmpl-list.sin-rutas.component.html',
   styleUrls: ['./componente.component.scss'],
 })
 export class LibrosListComponent implements OnInit {
