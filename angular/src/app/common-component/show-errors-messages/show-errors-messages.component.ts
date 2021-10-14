@@ -15,7 +15,6 @@ export class ShowErrorsMessagesComponent implements OnInit {
   ngOnchanges(changes: SimpleChanges): void {
     if(this.errors !== null){
     for (let key of Object.keys(this.errors)) {
-      console.log(key)
       switch (key) {
         case 'required':
           this.list.push('Campo requerido')
@@ -33,7 +32,6 @@ export class ShowErrorsMessagesComponent implements OnInit {
             this.list.push(`El mayor número permitido es ${this.errors[key]["max"]}`)
             break;
           case 'iban':
-            console.log('SSSSS')
             this.list.push('Iban incorrecto')
             break;
         default:

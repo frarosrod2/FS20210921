@@ -19,6 +19,7 @@ import { CommonComponentModule } from '../common-component/common-component.modu
     FormsModule,
     RouterModule.forChild([]),
     MyCoreModule,
+    MainModule,
     CommonServicesModule, MainModule, CommonComponentModule
   ],
   exports: [CONTACTOS_COMPONENTES],

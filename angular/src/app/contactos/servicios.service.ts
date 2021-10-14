@@ -1,8 +1,10 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoggerService } from 'src/lib/my-core';
 import { RESTDAOService } from '../base-code/RESTDAOService';
 import { NotificationService, NotificationType } from '../common-services';
+import { AUTH_REQUIRED } from '../security';
 
 export type ModoCRUD = 'list' | 'add' | 'edit' | 'view' | 'delete';
 
@@ -12,7 +14,7 @@ export type ModoCRUD = 'list' | 'add' | 'edit' | 'view' | 'delete';
 export class ContactosDAOService extends RESTDAOService<any, any> {
   constructor(http: HttpClient) {
     super(http, 'contactos', {
-      // context: new HttpContext().set(AUTH_REQUIRED, true),
+      context: new HttpContext().set(AUTH_REQUIRED, true),
     });
   }
 }
@@ -21,6 +23,8 @@ export class ContactosDAOService extends RESTDAOService<any, any> {
   providedIn: 'root',
 })
 export class ContactosViewModelService {
+
+  protected listURL = '/contactos';
   protected modo: ModoCRUD = 'list';
   protected listado: Array<any> = [];
   protected datos: Array<any> = [];
@@ -29,12 +33,8 @@ export class ContactosViewModelService {
   protected itemsPerPage: number = 10;
   protected allPages: number =100;
 
-  constructor(
-    protected notify: NotificationService,
-    protected out: LoggerService,
-    protected dao: ContactosDAOService
-  ) {}
-
+  constructor(protected notify: NotificationService, protected out: LoggerService,
+    protected dao: ContactosDAOService, protected router: Router) { }
   public get Modo(): ModoCRUD {
     return this.modo;
   }
@@ -63,8 +63,9 @@ export class ContactosViewModelService {
       (data) => {
         this.datos = data;
         this.modo = 'list';
-        this.allPages = Math.ceil(data.length / this.itemsPerPage);
-        this.listado = this.datos.slice(0, this.itemsPerPage);
+        // this.allPages = Math.ceil(data.length / this.itemsPerPage);
+        // this.listado = this.datos.slice(0, this.itemsPerPage);
+        this.listado = data
       },
       (err) => this.notify.add(err.message)
     );
@@ -113,7 +114,8 @@ export class ContactosViewModelService {
   public cancel(): void {
     this.elemento = {};
     this.idOriginal = null;
-    this.list();
+    // this.list();
+    this.router.navigateByUrl(this.listURL);
   }
 
   public onPageChange(page: number = 1): void {
