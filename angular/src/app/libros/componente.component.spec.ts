@@ -1,20 +1,29 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LoggerService } from 'src/lib/my-core';
+import { NotificationService } from '../common-services';
 
-import { ComponenteComponent } from './componente.component';
+import { LibrosComponent } from './componente.component';
 
-describe('ComponenteComponent', () => {
-  let component: ComponenteComponent;
-  let fixture: ComponentFixture<ComponenteComponent>;
+describe('LibrosComponent', () => {
+  let component: LibrosComponent;
+  let fixture: ComponentFixture<LibrosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ComponenteComponent ]
+       declarations: [ LibrosComponent ],
+      providers: [ NotificationService, LoggerService ],
+      imports: [ HttpClientTestingModule, RouterTestingModule, FormsModule ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComponenteComponent);
+    fixture = TestBed.createComponent(LibrosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

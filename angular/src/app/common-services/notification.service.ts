@@ -6,7 +6,7 @@ export enum NotificationType { error, warn, info, log }
 
 export class Notification {
   constructor(private id: number, private message: string,
-              private type: NotificationType) {}
+    private type: NotificationType) { }
   public get Id() { return this.id; }
   public get Message() { return this.message; }
   public get Type() { return this.type; }
@@ -16,19 +16,17 @@ export class Notification {
   providedIn: 'root'
 })
 export class NotificationService {
-
-  private listado: Array<Notification> = [];
   public readonly NotificationType = NotificationType;
+  private listado: Array<Notification> = [];
   private notificacion$ = new Subject<Notification>();
-  public get Notification() {return this.notificacion$};
 
   constructor(private out: LoggerService) { }
 
-  public get Listado() { return Object.assign([], this.listado); }
-  public get HayNotificaciones() { return this.listado.length > 0; }
+  public get Listado(): Array<Notification> { return Object.assign([], this.listado); }
+  public get HayNotificaciones(): boolean { return this.listado.length > 0; }
+  public get Notification() { return this.notificacion$; }
 
-  public add(msg: string, type: NotificationType = NotificationType.error)
- {
+  public add(msg: string, type: NotificationType = NotificationType.error) {
     if (!msg || msg === '') {
       this.out.error('Falta el mensaje de notificación.');
       return;
@@ -57,4 +55,5 @@ export class NotificationService {
       this.listado.splice(0);
     }
   }
+
 }
