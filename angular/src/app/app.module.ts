@@ -18,6 +18,7 @@ import { CommonComponentModule } from './common-component/common-component.modul
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 import { ContactoModule } from './contactos';
 import { LibrosModule } from './libros';
+import { BlogModule } from './blog';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { LibrosModule } from './libros';
   imports: [
     BrowserModule, FormsModule, HttpClientModule,
     AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule, CommonComponentModule,
-    SecurityModule, ContactoModule, LibrosModule
+    SecurityModule, ContactoModule, LibrosModule, BlogModule
   ],
   providers: [LoggerService,
   {provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL}, { provide: LOCALE_ID, useValue: 'es-ES'},

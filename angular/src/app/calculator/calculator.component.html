@@ -6,26 +6,38 @@
     <link href=".\calculator.component.scss" rel="stylesheet" />
   </head>
   <body>
-      <h2>Calculadora <img src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png" alt="logo"></h2>
+    <h2>
+      Calculadora
+      <img
+        src="https://mplsap.com/wp-content/uploads/2018/03/viewnext-logo-trophy.png"
+        alt="logo"
+      />
+    </h2>
     <div class="calculator-grid">
       <div class="output">
-        <div class="pending"><span [textContent]="displayNumber(pending)"></span><span [textContent]="operation"></span></div>
-        <div class="current-operand" [textContent]="displayNumber(current)"></div>
+        <div class="pending">
+          <span [textContent]="displayNumber(pending)"></span
+          ><span [textContent]="operation"></span>
+        </div>
+        <div
+          class="current-operand"
+          [textContent]="displayNumber(current)"
+        ></div>
       </div>
       <button (click)="clear()" class="span-two">AC</button>
       <button (click)="deleteNumber()">DEL</button>
       <button (click)="selectOp('/')" value="/">÷</button>
-      <button (click)="addNumber('1')">1</button>
-      <button (click)="addNumber('2')">2</button>
-      <button (click)="addNumber('3')">3</button>
+      <button (click)="addNumber('1')" value="1">1</button>
+      <button (click)="addNumber('2')" value="2">2</button>
+      <button (click)="addNumber('3')" value="3">3</button>
       <button (click)="selectOp('*')" value="*">x</button>
-      <button (click)="addNumber('4')">4</button>
-      <button (click)="addNumber('5')">5</button>
-      <button (click)="addNumber('6')">6</button>
+      <button (click)="addNumber('4')" value="4">4</button>
+      <button (click)="addNumber('5')" value="5">5</button>
+      <button (click)="addNumber('6')" value="6">6</button>
       <button (click)="selectOp('+')" value="+">+</button>
-      <button (click)="addNumber('7')">7</button>
-      <button (click)="addNumber('8')">8</button>
-      <button (click)="addNumber('9')">9</button>
+      <button (click)="addNumber('7')" value="7">7</button>
+      <button (click)="addNumber('8')" value="8">8</button>
+      <button (click)="addNumber('9')" value="9">9</button>
       <button (click)="selectOp('-')" value="-">-</button>
       <button (click)="addNumber('.')">.</button>
       <button (click)="addNumber('.')">0</button>

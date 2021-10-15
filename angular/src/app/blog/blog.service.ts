@@ -6,76 +6,58 @@ import { RESTDAOService } from '../base-code/RESTDAOService';
 import { NotificationService, NotificationType } from '../common-services';
 import { AUTH_REQUIRED } from '../security';
 
+
+
 export type ModoCRUD = 'list' | 'add' | 'edit' | 'view' | 'delete';
+
 
 @Injectable({
   providedIn: 'root',
 })
-export class ContactosDAOService extends RESTDAOService<any, any> {
+export class BlogDAOService extends RESTDAOService<any, any> {
   constructor(http: HttpClient) {
-    super(http, 'contactos', { withCredentials: true, context: new HttpContext().set(AUTH_REQUIRED, true) });
+    super(http, 'blog', { withCredentials: true, context: new HttpContext().set(AUTH_REQUIRED, true) });
   }
 }
 
-export class Contactos {
+export class Blog {
   id: number = 0;
-  tratamiento: string | null = null;
-  nombre: string | null = null;
-  apellidos: string | null = null;
-  telefono: string | null = null;
-  email: string | null = null;
-  sexo: string | null = null;
-  nacimiento: string | null = null;
-  avatar: string | null = null;
-  conflictivo: boolean = false;
+  titulo: string | null = null;
+  texto: string | null = null;
+  autor: string | null = null;
+  fecha: string | null = null;
+  megusta: number | null = null;
+  fotourl: string | null = null;
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class ContactosViewModelService {
+export class BlogViewModelService {
 
-  protected listURL = '/contactos';
+  protected listURL = '';
   protected modo: ModoCRUD = 'list';
   protected listado: Array<any> = [];
-  protected datos: Array<any> = [];
   protected elemento: any = {};
   protected idOriginal: any = null;
-  protected itemsPerPage: number = 10;
-  protected allPages: number =100;
 
   constructor(protected notify: NotificationService, protected out: LoggerService,
-    protected dao: ContactosDAOService, protected router: Router) { }
+    protected dao: BlogDAOService, protected router: Router) { }
+
   public get Modo(): ModoCRUD {
     return this.modo;
   }
   public get Listado(): Array<any> {
     return this.listado;
   }
-
-  public get Datos(): Array<any> {
-    return this.listado;
-  }
-
   public get Elemento(): any {
     return this.elemento;
-  }
-
-  public get ItemsPerPage(): any {
-    return this.itemsPerPage;
-  }
-
-  public get AllPages(): any {
-    return this.allPages;
   }
 
   public list(): void {
     this.dao.query().subscribe(
       (data) => {
-        this.datos = data;
         this.modo = 'list';
-        // this.allPages = Math.ceil(data.length / this.itemsPerPage);
-        // this.listado = this.datos.slice(0, this.itemsPerPage);
         this.listado = data
       },
       (err) => this.notify.add(err.message)
@@ -86,16 +68,18 @@ export class ContactosViewModelService {
     this.elemento = {};
     this.modo = 'add';
   }
+
   public edit(key: any): void {
     this.dao.get(key).subscribe(
-      (data) => {
+      data => {
         this.elemento = data;
         this.idOriginal = key;
         this.modo = 'edit';
       },
-      (err) => this.notify.add(err.message)
+      err => this.notify.add(err.message)
     );
   }
+
   public view(key: any): void {
     this.dao.get(key).subscribe(
       (data) => {
@@ -125,14 +109,7 @@ export class ContactosViewModelService {
   public cancel(): void {
     this.elemento = {};
     this.idOriginal = null;
-    // this.list();
     this.router.navigateByUrl(this.listURL);
-  }
-
-  public onPageChange(page: number = 1): void {
-    const startItem = (page - 1) * this.itemsPerPage;
-    const endItem = page * this.itemsPerPage;
-    this.listado = this.datos.slice(startItem, endItem);
   }
 
   public send(): void {
@@ -141,7 +118,7 @@ export class ContactosViewModelService {
         this.dao.add(this.elemento).subscribe(
           (data) => {
             this.cancel()
-            this.notify.add('Contacto añadido correctamente', NotificationType.info)
+            this.notify.add('Entrada añadida correctamente', NotificationType.info)
           },
           (err) => {this.notify.add(err.error.toString())
           }
@@ -151,7 +128,7 @@ export class ContactosViewModelService {
         this.dao.change(this.idOriginal, this.elemento).subscribe(
           (data) => {
             this.cancel()
-            this.notify.add('Contacto editado correctamente', NotificationType.info)
+            this.notify.add('Entrada editada correctamente', NotificationType.info)
           },
           (err) => this.notify.add(err.message)
         );
@@ -161,3 +138,5 @@ export class ContactosViewModelService {
     }
   }
 }
+
+
