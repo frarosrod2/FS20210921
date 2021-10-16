@@ -1,1 +1,21 @@
-<p>blog works!</p>
+<div class="container mt-4 px-5">
+  <ng-container *ngFor="let item of VM.Listado">
+  <div class="row">
+    <div class="card mb-4 px-3">
+        <a class="link" href="#!" *ngIf="item.fotourl"
+          ><img
+            class="card-img mt-2"
+            src="{{item.fotourl}}"
+            alt="..."
+        /></a>
+        <div class="card-body">
+          <div class="small text-muted">{{item.fecha | dateString}}</div>
+          <h2 class="card-title">{{item.titulo}}</h2>
+          <p class="card-text" [innerHTML]="item.texto">
+          </p>
+          <a class="btn btn-primary" [routerLink]="[item.id, 'edit']">Leer más →</a>
+        </div>
+    </div>
+  </div>
+</ng-container>
+</div>

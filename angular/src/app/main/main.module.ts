@@ -8,15 +8,16 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HeaderComponent } from './header/header.component';
 import { SecurityModule } from '../security';
 import { RouterModule } from '@angular/router';
+import { BlogHeaderComponent } from './blog-header/blog-header.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    AjaxWaitComponent, NotificationComponent, PageNotFoundComponent, HeaderComponent
+    AjaxWaitComponent, NotificationComponent, PageNotFoundComponent, HeaderComponent, BlogHeaderComponent
   ],
   exports: [
     HomeComponent,
-    AjaxWaitComponent, NotificationComponent, PageNotFoundComponent, HeaderComponent
+    AjaxWaitComponent, NotificationComponent, PageNotFoundComponent, HeaderComponent, BlogHeaderComponent
   ],
   imports: [
     CommonModule, CommonServicesModule, SecurityModule, RouterModule.forChild([])

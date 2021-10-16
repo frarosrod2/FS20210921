@@ -1,1 +1,19 @@
 @import "node_modules/bootstrap/scss/bootstrap";
+
+.card-img {
+  height: 320px;
+  width: 80%;
+  text-align: center;
+}
+
+.link {
+  text-align: center;
+}
+
+@media only screen and (max-width: 780px) {
+  .card-img-top {
+    height: 190px;
+    width: 80%;
+    text-align: center;
+  }
+}

@@ -10,4 +10,22 @@ export class ElipsisPipe implements PipeTransform {
   }
   }
 
-  export const PIPES_CADENAS = [ElipsisPipe]
+
+  @Pipe({
+    name: 'dateString'
+  })
+
+  export class DateStringPipe implements PipeTransform {
+    transform(value: any): any {
+      if(value !==null){
+      let split = value.split('-')
+      let year = split[0];
+      let month = split[1].replace('0','')
+      let day = split[2]
+      const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+      return (day + ' de '+monthNames[month-1]+', '+year)
+      }
+    }
+    }
+
+    export const PIPES_CADENAS = [ElipsisPipe, DateStringPipe]
