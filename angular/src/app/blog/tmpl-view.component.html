@@ -1,1 +1,15 @@
-<p>blog works!</p>
+<div class="px-3 px-sm-2 px-lg-4 px-xl-6 mt-3">
+  <div class="img-container" *ngIf="VM.Elemento.fotourl">
+    <img
+            onerror="this.onerror=null; this.src='https://farm5.staticflickr.com/4363/36346283311_74018f6e7d_o.png'"
+            class="card-img mt-2"
+            src="{{ VM.Elemento.fotourl }}"
+            alt="..."
+          />
+  </div>
+  <div class="card-body">
+    <div class="small text-muted">{{ VM.Elemento.fecha | dateString }} - {{VM.Elemento.autor}}</div>
+    <h2 class="card-title">{{ VM.Elemento.titulo }}</h2>
+    <p class="card-text" [innerHTML]="VM.Elemento.texto"></p>
+  </div>
+</div>

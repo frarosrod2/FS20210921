@@ -19,6 +19,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 import { ContactoModule } from './contactos';
 import { LibrosModule } from './libros';
 import { BlogModule } from './blog';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { BlogModule } from './blog';
   imports: [
     BrowserModule, FormsModule, HttpClientModule,
     AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule, CommonComponentModule,
-    SecurityModule, ContactoModule, LibrosModule, BlogModule
+    SecurityModule, ContactoModule, LibrosModule, BlogModule, EditorModule
   ],
   providers: [LoggerService,
   {provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL}, { provide: LOCALE_ID, useValue: 'es-ES'},

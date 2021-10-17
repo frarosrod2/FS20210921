@@ -1,1 +1,90 @@
-<p>blog works!</p>
+<app-notification></app-notification>
+
+<form #miForm="ngForm">
+  <div class="px-3 px-sm-2 px-lg-4 px-xl-6 mt-3">
+    <div class="form-group col-md-6 mb-2">
+      <label class="form-label" for="id">Código:</label>
+      <input
+        class="form-control"
+        [class.is-invalid]="id.invalid && miForm.dirty"
+        type="number"
+        name="id"
+        id="id"
+        [(ngModel)]="VM.Elemento.id"
+        #id="ngModel"
+        required
+        min="0"
+      />
+      <output class="text-danger" [myShowErrors]="id.errors"></output>
+    </div>
+    <div class="form-group col-md-6 mb-2">
+      <label for="titulo" class="form-label">Título</label>
+      <input
+        type="text"
+        class="form-control"
+        name="titulo"
+        id="titulo"
+        required
+        maxlength="80"
+        [(ngModel)]="VM.Elemento.titulo"
+        #titulo="ngModel"
+      />
+      <output class="text-danger" [myShowErrors]="titulo.errors"></output>
+    </div>
+    <div class="form-group col-md-6 mb-2">
+      <label for="autor" class="form-label">Autor</label>
+      <input
+        type="text"
+        class="form-control"
+        name="autor"
+        id="autor"
+        maxlength="30"
+        [(ngModel)]="VM.Elemento.autor"
+        #autor="ngModel"
+      />
+      <output class="text-danger" [myShowErrors]="autor.errors"></output>
+    </div>
+    <div class="form-group col-md-6 mb-2">
+      <label for="fotourl" class="form-label">URL de la imagen</label>
+      <input
+        type="text"
+        class="form-control"
+        id="fotourl"
+        name="fotourl"
+        [(ngModel)]="VM.Elemento.fotourl"
+        #fotourl="ngModel"
+      />
+      <output class="text-danger" [myShowErrors]="fotourl.errors"></output>
+    </div>
+    <!-- <div class="form-group col-md-2 mb-2">
+      <label class="form-label" for="fecha">Fecha</label>
+      <input
+        class="form-control"
+        type="date"
+        name="fecha"
+        id="fecha"
+        [(ngModel)]="VM.Elemento.fecha"
+        #fecha="ngModel"
+      />
+      <output class="text-danger" [myShowErrors]="fecha.errors"></output>
+    </div> -->
+    <div class="form-group col-md-6 mb-2">
+      <label for="texto" class="form-label">Texto</label>
+      <textarea
+        type="text"
+        class="form-control"
+        id="texto"
+        name="texto"
+        [(ngModel)]="VM.Elemento.texto"
+        #texto="ngModel"
+        rows="5"
+      ></textarea>
+      <output class="text-danger" [myShowErrors]="texto.errors"></output>
+    </div>
+    <app-form-buttons
+      (send)="VM.send()"
+      [send-disabled]="miForm.invalid"
+      (cancel)="VM.cancel()"
+    ></app-form-buttons>
+  </div>
+</form>

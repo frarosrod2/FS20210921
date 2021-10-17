@@ -1,14 +1,15 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 
 .card-img {
-  height: 320px;
+  height: 350px;
   width: 80%;
   text-align: center;
 }
 
-.link {
+.img-container {
   text-align: center;
 }
+
 
 @media only screen and (max-width: 780px) {
   .card-img-top {
@@ -17,3 +18,4 @@
     text-align: center;
   }
 }
+

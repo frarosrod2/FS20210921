@@ -103,7 +103,6 @@ describe('ContactosViewModelService', () => {
   it('list', fakeAsync(() => {
     service.list()
     tick()
-    console.log('list', service)
     expect(service.Listado.length).toBe(4)
     expect(service.Modo).toBe('list')
   }))

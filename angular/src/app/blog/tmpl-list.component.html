@@ -1,21 +1,33 @@
-<div class="container mt-4 px-5">
-  <ng-container *ngFor="let item of VM.Listado">
-  <div class="row">
-    <div class="card mb-4 px-3">
-        <a class="link" href="#!" *ngIf="item.fotourl"
-          ><img
-            class="card-img mt-2"
-            src="{{item.fotourl}}"
-            alt="..."
-        /></a>
-        <div class="card-body">
-          <div class="small text-muted">{{item.fecha | dateString}}</div>
-          <h2 class="card-title">{{item.titulo}}</h2>
-          <p class="card-text" [innerHTML]="item.texto">
-          </p>
-          <a class="btn btn-primary" [routerLink]="[item.id, 'edit']">Leer más →</a>
-        </div>
-    </div>
+<div class="container mt-4 px-3 px-lg-5 px-sm-2">
+  <div class="text-center mb-3" *ngIf="VM.isAutenticated">
+    <a class="btn btn-primary" [routerLink]="['/add']"
+      >+ Añadir nueva entrada</a
+    >
   </div>
-</ng-container>
+  <ng-container *ngFor="let item of VM.Listado">
+    <div class="row">
+      <div class="card mb-4 px-1 px-sm-2 px-lg-4">
+        <div class="img-container" *ngIf="item.fotourl">
+          <img
+            onerror="this.onerror=null; this.src='https://farm5.staticflickr.com/4363/36346283311_74018f6e7d_o.png'"
+            class="card-img mt-2"
+            src="{{ item.fotourl }}"
+            alt="..."
+          />
+        </div>
+        <div class="card-body">
+          <div class="small text-muted">{{ item.fecha | dateString }} - {{item.autor}}</div>
+          <h2 class="card-title">{{ item.titulo }}</h2>
+          <p class="card-text" [innerHTML]="item.texto | elipsis: 400"></p>
+          <a class="btn btn-primary" [routerLink]="[item.id]"
+            >Leer más →</a
+          >
+          <button class="btn btn-success" *ngIf="VM.isAutenticated" [routerLink]="[item.id, 'edit']">
+            <i class="fas fa-pen"></i>
+          </button>
+          <button class="btn btn-danger"  *ngIf="VM.isAutenticated" (click)="VM.delete(item.id)"><i class="far fa-trash-alt"></i></button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
