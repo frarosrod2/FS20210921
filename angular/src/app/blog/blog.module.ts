@@ -7,8 +7,10 @@ import { MyCoreModule } from 'src/lib/my-core';
 import { MainModule } from '../main';
 import { CommonServicesModule } from '../common-services';
 import { CommonComponentModule } from '../common-component';
-import { BlogAddComponent, BlogEditComponent, BlogListComponent, BlogViewComponent, BLOG_COMPONENTES } from '.';
-import { AuthGuard, AuthService } from '../security';
+import {EditorModule} from 'primeng/editor';
+import {InplaceModule} from 'primeng/inplace';
+import { BLOG_COMPONENTES } from '.';
+import {MessagesModule} from 'primeng/messages';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,7 @@ import { AuthGuard, AuthService } from '../security';
     RouterModule.forChild([]),
     MyCoreModule,
     MainModule,
-    CommonServicesModule, MainModule, CommonComponentModule
+    CommonServicesModule, MainModule, CommonComponentModule, EditorModule, InplaceModule, MessagesModule,
   ],
   exports: [BlogComponent]
 })

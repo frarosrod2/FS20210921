@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ContactosComponent } from '../contactos';
 import { BlogViewModelService } from './blog.service';
-import { Editor } from 'primeng/editor';
 
 @Component({
   selector: 'app-blog',

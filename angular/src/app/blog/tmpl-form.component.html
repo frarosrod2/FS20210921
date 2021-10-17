@@ -70,15 +70,7 @@
     </div> -->
     <div class="form-group col-md-6 mb-2">
       <label for="texto" class="form-label">Texto</label>
-      <textarea
-        type="text"
-        class="form-control"
-        id="texto"
-        name="texto"
-        [(ngModel)]="VM.Elemento.texto"
-        #texto="ngModel"
-        rows="5"
-      ></textarea>
+      <p-editor [(ngModel)]="VM.Elemento.texto" [style]="{'height':'320px'}" name="texto" #texto="ngModel" maxlength="100"></p-editor>
       <output class="text-danger" [myShowErrors]="texto.errors"></output>
     </div>
     <app-form-buttons

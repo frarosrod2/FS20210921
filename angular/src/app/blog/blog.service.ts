@@ -1,6 +1,7 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { LoggerService } from 'src/lib/my-core';
 import { RESTDAOService } from '../base-code/RESTDAOService';
 import { NotificationService, NotificationType } from '../common-services';
@@ -17,6 +18,22 @@ export class BlogDAOService extends RESTDAOService<any, any> {
       withCredentials: true,
       context: new HttpContext().set(AUTH_REQUIRED, true),
     });
+  }
+  page(page: number, rows: number = 20): Observable<{ page: number, pages: number, rows: number, list: Array<any> }> {
+    return new Observable(subscriber => {
+      this.http.get<{ pages: number, rows: number }>(`${this.baseUrl}?_page=count&_rows=${rows}`, this.option)
+        .subscribe(
+          data => {
+            if (page >= data.pages) page = data.pages > 0 ? data.pages - 1 : 0;
+            this.http.get<Array<any>>(`${this.baseUrl}?_page=${page}&_rows=${rows}&_sort=nombre`, this.option)
+              .subscribe(
+                lst => subscriber.next({ page, pages: data.pages, rows: data.rows, list: lst }),
+                err => subscriber.error(err)
+              )
+          },
+          err => subscriber.error(err)
+        )
+    })
   }
 }
 
@@ -165,5 +182,22 @@ export class BlogViewModelService {
       case 'view':
         break;
     }
+  }
+  page = 0;
+  totalPages = 0;
+  totalRows = 0;
+  rowsPerPage = 8;
+  load(page: number = -1) {
+    if(page < 0) page = this.page
+    this.dao.page(page, this.rowsPerPage).subscribe(
+      rslt => {
+        this.page = rslt.page;
+        this.totalPages = rslt.pages;
+        this.totalRows = rslt.rows;
+        this.listado = rslt.list;
+        this.modo = 'list';
+      },
+      err => this.notify.add(err.message)
+    )
   }
 }
