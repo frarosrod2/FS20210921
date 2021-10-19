@@ -1,6 +1,7 @@
 package com.examples;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,10 +13,15 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.mockito.Mock;
+import org.mockito.exceptions.base.MockitoException;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CalculadoraTest {
 	Calculadora calc;
 
@@ -78,5 +84,18 @@ class CalculadoraTest {
 	@NullSource
 	void testNifNull(String nif) {
 		assertFalse(calc.isNif(nif));
+	}
+	
+	@Nested
+	@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+	class Mockeado {
+		@Mock
+		Calculadora calculadora;
+		
+		@Test
+		void suma_mock() {
+			when(calculadora.suma(2., 2.)).thenReturn(2.);
+			assertEquals(calculadora.suma(2., 2.), 2);
+		}
 	}
 }
