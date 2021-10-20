@@ -4,34 +4,45 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-
+import java.util.Objects;
 
 /**
  * The persistent class for the actor database table.
  * 
  */
 @Entity
-@Table(name="actor")
-@NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
+@Table(name = "actor")
+@NamedQuery(name = "Actor.findAll", query = "SELECT a FROM Actor a")
 public class Actor implements Serializable {
+	public Actor(int actorId, String firstName, String lastName) {
+		super();
+		this.actorId = actorId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public Actor(int actorId) {
+		this.actorId = actorId;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="actor_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "actor_id")
 	private int actorId;
 
-	@Column(name="first_name")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name="last_name")
+	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name="last_update")
+	@Column(name = "last_update")
 	private Timestamp lastUpdate;
 
-	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="actor")
+	// bi-directional many-to-one association to FilmActor
+	@OneToMany(mappedBy = "actor")
 	private List<FilmActor> filmActors;
 
 	public Actor() {
@@ -91,4 +102,38 @@ public class Actor implements Serializable {
 		return filmActor;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(actorId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Actor other = (Actor) obj;
+		return actorId == other.actorId;
+	}
+
+	@Override
+	public String toString() {
+		return "Actor [actorId=" + actorId + ", firstName=" + firstName + ", lastName=" + lastName + ", lastUpdate="
+				+ lastUpdate + "]";
+	}
+
+	public void jubilate() {
+
+	}
+
+	public void fire() {
+
+	}
+
+	public void reward(String premio) {
+
+	}
 }
