@@ -31,6 +31,10 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public Actor add(Actor item) throws DuplicateKeyException, InvalidDataException {
+		if(item==null)
+			throw new InvalidDataException("Faltan los datos");
+		if(item.isInvalid())
+			throw new InvalidDataException("Errores de validación");
 		if(getOne(item.getActorId()).isPresent()) {
 			throw new DuplicateKeyException();
 		}
@@ -39,6 +43,10 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public Actor modify(Actor item) throws NotFoundException, InvalidDataException {
+		if(item==null)
+			throw new InvalidDataException("Faltan los datos");
+		if(item.isInvalid())
+			throw new InvalidDataException("Errores de validación");
 		if(getOne(item.getActorId()).isPresent()) {
 			throw new NotFoundException();
 		}
@@ -46,7 +54,9 @@ public class ActorServiceImpl implements ActorService {
 	}
 
 	@Override
-	public void delete(Actor item) {
+	public void delete(Actor item) throws InvalidDataException {
+		if(item==null)
+			throw new InvalidDataException("Faltan los datos");
 		deleteById(item.getActorId());
 
 	}
