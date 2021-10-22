@@ -2,6 +2,8 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.sql.Timestamp;
 
 
@@ -24,6 +26,7 @@ public class FilmCategory implements Serializable {
 	//bi-directional many-to-one association to Category
 	@ManyToOne
 	@JoinColumn(name="category_id", insertable=false, updatable=false)
+	@NotNull
 	private Category category;
 
 	//bi-directional many-to-one association to Film

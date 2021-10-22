@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.Length;
 
 import com.example.domains.core.EntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -45,16 +46,17 @@ public class Category extends EntityBase<Category> implements Serializable {
 	@Column(name = "last_update")
 	@Generated(value = GenerationTime.ALWAYS)
 	@PastOrPresent
+	@JsonIgnore
 	private Timestamp lastUpdate;
 
 	@Column(name = "name")
 	@NotBlank
-	@Length(min = 2, max = 45)
+	@Length(max = 25)
 	private String name;
 
 	// bi-directional many-to-one association to FilmCategory
 	@OneToMany(mappedBy = "category")
-	@Valid
+	@JsonIgnore
 	private List<FilmCategory> filmCategories;
 
 	public Category() {
@@ -66,22 +68,6 @@ public class Category extends EntityBase<Category> implements Serializable {
 
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
-	}
-
-	public Timestamp getLastUpdate() {
-		return this.lastUpdate;
-	}
-
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public List<FilmCategory> getFilmCategories() {
@@ -121,14 +107,6 @@ public class Category extends EntityBase<Category> implements Serializable {
 			return false;
 		Category other = (Category) obj;
 		return categoryId == other.categoryId;
-	}
-
-	public Category(int categoryId, @PastOrPresent Timestamp lastUpdate,
-			@NotBlank @Length(min = 2, max = 45) String name) {
-		super();
-		this.categoryId = categoryId;
-		this.lastUpdate = lastUpdate;
-		this.name = name;
 	}
 
 	@Override

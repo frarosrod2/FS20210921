@@ -15,8 +15,4 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
 	
 	List<Actor> findByFirstNameStartingWithOrderByLastNameDesc(String prefijo);
 	
-	List<Actor> findByLastUpdateGreatherThan(LocalDate fecha);
-	
-	@Query("FROM Actor a WHERE a.last_update > ?1")
-	List<Actor> laMia(LocalDate fecha);
 }

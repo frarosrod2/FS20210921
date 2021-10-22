@@ -39,6 +39,16 @@ public class CatalogoApplication implements CommandLineRunner{
 		}
 		
 		dao.findAll().forEach(System.out::println);
+	
+
+	Category cat= new Category(1, "");
+	if(cat.isInvalid()) {
+		cat.getErrors().forEach(item-> 
+		System.out.println(item.getPropertyPath() + ": " + item.getMessage())
+		);
+	}else {
+		System.out.println("Válido");
 	}
 
+}
 }
