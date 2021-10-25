@@ -2,73 +2,111 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
+
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
+import com.example.domains.core.EntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-
 
 /**
  * The persistent class for the film database table.
  * 
  */
 @Entity
-@Table(name="film")
-@NamedQuery(name="Film.findAll", query="SELECT f FROM Film f")
-public class Film implements Serializable {
+@Table(name = "film")
+@NamedQuery(name = "Film.findAll", query = "SELECT f FROM Film f")
+public class Film extends EntityBase<Film> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
+			String title, Language language) {
+		this.filmId = filmId;
+		this.length = length;
+		this.rating = rating;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.rentalDuration = rentalDuration;
+		this.title = title;
+		this.language = language;
+	}
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="film_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "film_id")
 	private int filmId;
 
 	@Lob
 	private String description;
 
-	@Column(name="last_update")
+	@Column(name = "last_update")
+	@Generated(value = GenerationTime.ALWAYS)
+	@PastOrPresent
 	private Timestamp lastUpdate;
 
 	private int length;
 
 	private String rating;
 
-	@Column(name="release_year")
+	@Column(name = "release_year")
 	private Short releaseYear;
 
-	@Column(name="rental_duration")
+	@Column(name = "rental_duration")
 	private byte rentalDuration;
 
-	@Column(name="rental_rate")
+	@Column(name = "rental_rate")
 	private BigDecimal rentalRate;
 
-	@Column(name="replacement_cost")
+	@Column(name = "replacement_cost")
 	private BigDecimal replacementCost;
 
 	private String title;
 
-	//bi-directional many-to-one association to Language
+	// bi-directional many-to-one association to Language
 	@ManyToOne
-	@JoinColumn(name="language_id")
+	@JoinColumn(name = "language_id")
 	private Language language;
 
-	//bi-directional many-to-one association to Language
+	// bi-directional many-to-one association to Language
 	@ManyToOne
-	@JoinColumn(name="original_language_id")
+	@JoinColumn(name = "original_language_id")
 	private Language languageVO;
 
-	//bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy="film")
+	// bi-directional many-to-one association to FilmActor
+	@OneToMany(mappedBy = "film")
 	private List<FilmActor> filmActors;
 
-	//bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy="film")
+	// bi-directional many-to-one association to FilmCategory
+	@OneToMany(mappedBy = "film")
 	private List<FilmCategory> filmCategories;
 
-	//bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy="film")
+	// bi-directional many-to-one association to Inventory
+	@OneToMany(mappedBy = "film")
 	private List<Inventory> inventories;
 
 	public Film() {
+	}
+
+	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
+			BigDecimal rentalRate, BigDecimal replacementCost, String title, Language language, Language languageVO,
+			List<FilmActor> actors) {
+		this.filmId = filmId;
+		this.length = length;
+		this.rating = rating;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.rentalDuration = rentalDuration;
+		this.rentalRate = rentalRate;
+		this.replacementCost = replacementCost;
+		this.title = title;
+		this.language = language;
+		this.languageVO = languageVO;
+		this.filmActors = actors;
 	}
 
 	public int getFilmId() {

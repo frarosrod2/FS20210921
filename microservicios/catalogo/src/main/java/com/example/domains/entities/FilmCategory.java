@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Timestamp;
 
 
@@ -27,11 +29,13 @@ public class FilmCategory implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="category_id", insertable=false, updatable=false)
 	@NotNull
+	@JsonIgnoreProperties("film")
 	private Category category;
 
 	//bi-directional many-to-one association to Film
 	@ManyToOne
 	@JoinColumn(name="film_id", insertable=false, updatable=false)
+	@JsonIgnoreProperties("filmCategories")
 	private Film film;
 
 	public FilmCategory() {

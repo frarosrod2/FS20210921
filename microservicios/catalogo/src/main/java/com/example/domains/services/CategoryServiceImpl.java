@@ -19,17 +19,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository dao;
 	
-	@Override
 	public List<Category> getAll() {
 		return dao.findAll();
 	}
 
-	@Override
 	public Optional<Category> getOne(Integer id) {
 		return dao.findById(id);
 	}
 
-	@Override
 	public Category add(Category item) throws DuplicateKeyException, InvalidDataException {
 		if(item==null)
 			throw new InvalidDataException("Faltan los datos");
@@ -41,26 +38,23 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.save(item);
 	}
 
-	@Override
 	public Category modify(Category item) throws NotFoundException, InvalidDataException {
 		if(item==null)
 			throw new InvalidDataException("Faltan los datos");
 		if(item.isInvalid())
 			throw new InvalidDataException(item.getErroString());
-		if(getOne(item.getCategoryId()).isPresent()) {
+		if(getOne(item.getCategoryId()).isEmpty()) {
 			throw new NotFoundException();
 		}
-		return null;
+		return dao.save(item);
 	}
 
-	@Override
 	public void delete(Category item) throws InvalidDataException {
 		if(item==null)
 			throw new InvalidDataException("Faltan los datos");
 		deleteById(item.getCategoryId());
 	}
 
-	@Override
 	public void deleteById(Integer id) {
 		dao.deleteById(id);
 

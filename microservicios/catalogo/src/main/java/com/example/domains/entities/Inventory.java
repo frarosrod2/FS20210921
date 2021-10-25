@@ -2,6 +2,9 @@ package com.example.domains.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class Inventory implements Serializable {
 	//bi-directional many-to-one association to Film
 	@ManyToOne
 	@JoinColumn(name="film_id")
+	@JsonIgnoreProperties("inventories")
 	private Film film;
 
 	//bi-directional many-to-one association to Store

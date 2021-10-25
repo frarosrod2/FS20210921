@@ -10,14 +10,17 @@ import lombok.NoArgsConstructor;
 public class CategoryDTO {
 
 	private int categoryId;
+	private String name;
 
 	public static Category from(CategoryDTO source) {
 		return new Category(
-			source.getCategoryId());
+			source.getCategoryId(),
+			source.getName());
 	}
 	
 	public static CategoryDTO from(Category source) {
 		return new CategoryDTO(
-			source.getCategoryId());
+			source.getCategoryId(),
+			source.getName());
 	}
 }
