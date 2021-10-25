@@ -1,11 +1,12 @@
 package com.example.domains.core;
 
-import java.beans.Transient;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+
+import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,7 +25,7 @@ public abstract class EntityBase<E> {
 	
 	@JsonIgnore
 	@Transient
-	public String getErroString() {
+	public String getErrorsString() {
 		Set<ConstraintViolation<E>> lst = getErrors();
 		if(lst.isEmpty()) return "";
 		StringBuilder sb = new StringBuilder("ERRORES:");
