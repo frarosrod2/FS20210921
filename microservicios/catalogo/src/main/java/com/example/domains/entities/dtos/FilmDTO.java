@@ -39,7 +39,7 @@ public class FilmDTO {
 			source.getTitle(),
 			source.getLanguage().getName(),
 			source.getLanguageVO() != null ? source.getLanguageVO().getName() : null,
-			source.getFilmActors().stream().map(x -> x.getActor().getFullName()).collect(Collectors.toList()),
-			source.getFilmCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList()));
+			source.getFilmActors() != null ? source.getFilmActors().stream().map(x -> x.getActor().getFullName()).collect(Collectors.toList()) : null,
+			source.getFilmCategories() != null ? source.getFilmCategories().stream().map(x -> x.getCategory().getName()).collect(Collectors.toList()) : null);
 	}
 }

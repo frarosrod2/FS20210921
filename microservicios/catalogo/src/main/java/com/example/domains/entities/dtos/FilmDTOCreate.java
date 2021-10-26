@@ -26,12 +26,12 @@ public class FilmDTOCreate {
 	private BigDecimal rentalRate;
 	private BigDecimal replacementCost;
 	private String title;
-	private Language language;
+	private int languageId;
 	private Language languageVO;
-	private List<FilmActor> actors; 
+	private List<Integer> filmActors; 
 	
 	public static Film from(FilmDTOCreate source) {
-		return new Film(
+		Film peli = new Film(
 			source.getFilmId(),
 			source.getLength(),
 			source.getRating(),
@@ -41,9 +41,10 @@ public class FilmDTOCreate {
 			source.getRentalRate(),
 			source.getReplacementCost(),
 			source.getTitle(),
-			source.getLanguage(),
-			source.getLanguageVO(),
-			source.getActors());
+			new Language(source.languageId),
+			source.getLanguageVO());
+		source.getFilmActors().forEach(x -> peli.addFilmActor(new Actor(x)));
+		return peli;
 	}
 	
 }

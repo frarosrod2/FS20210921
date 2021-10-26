@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,8 +94,7 @@ public class Film extends EntityBase<Film> implements Serializable {
 	}
 
 	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
-			BigDecimal rentalRate, BigDecimal replacementCost, String title, Language language, Language languageVO,
-			List<FilmActor> actors) {
+			BigDecimal rentalRate, BigDecimal replacementCost, String title, Language language, Language languageVO) {
 		this.filmId = filmId;
 		this.length = length;
 		this.rating = rating;
@@ -106,7 +106,7 @@ public class Film extends EntityBase<Film> implements Serializable {
 		this.title = title;
 		this.language = language;
 		this.languageVO = languageVO;
-		this.filmActors = actors;
+		this.filmActors = new ArrayList<FilmActor>();
 	}
 
 	public int getFilmId() {
@@ -219,6 +219,13 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 		return filmActor;
 	}
+	
+	public FilmActor addFilmActor(Actor actor) {
+		FilmActor nuevo = new FilmActor(this, actor);
+		getFilmActors().add(nuevo);
+		return nuevo;
+	}
+
 
 	public FilmActor removeFilmActor(FilmActor filmActor) {
 		getFilmActors().remove(filmActor);

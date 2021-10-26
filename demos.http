@@ -1,16 +1,1 @@
-GET http://localhost:8001/params/1?nom=hola
-Accept-Language: cristiano
-Accept: text/xml
-
-###
-
-POST http://localhost:8001/salida
-Accept-Language: es-es
-Accept: text/plain, application/json
-Content-Type: application/json
-
-{
-    "id": 122,
-    "nombre": "Nuevo",
-    "apellidos": "Actor"
-}
+GET http://localhost:8001/api/films

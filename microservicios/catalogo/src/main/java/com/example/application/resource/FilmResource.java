@@ -23,7 +23,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.domains.contracts.services.FilmActorService;
+import com.example.domains.contracts.services.FilmCategoryService;
 import com.example.domains.contracts.services.FilmService;
+import com.example.domains.contracts.services.InventoryService;
+import com.example.domains.contracts.services.RentalService;
 import com.example.domains.entities.Film;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.FilmDTO;
@@ -47,6 +51,18 @@ public class FilmResource {
 	@Autowired
 	FilmService srv;
 
+	@Autowired
+	FilmActorService srvFilmActorService;
+
+	@Autowired
+	FilmCategoryService srvFilmCategoryService;
+	
+	@Autowired
+	InventoryService srvInventoryService;
+	
+	@Autowired
+	RentalService srvRentalService;	
+	
 	@GetMapping
 	public List<FilmDTO> getAll(@RequestParam(required = false) String sort) {
 		if (sort == null)
@@ -60,27 +76,73 @@ public class FilmResource {
 		return srv.getByProjection(item, FilmDTO.class);
 	}
 
-		@GetMapping(path = "/{id}")
-		public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
-			var film = srv.getOne(id);
-			if(film.isEmpty())
-				throw new NotFoundException();
-			else
-				return FilmDTO.from(film.get());
-		}
-		
-		@PostMapping
-		public ResponseEntity<Object> create(@Valid @RequestBody FilmDTOCreate item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
-			if(item == null)
-				throw new BadRequestException("Faltan los datos");
-			Film newFilm = FilmDTOCreate.from(item);
-			var newItem = srv.add(newFilm);
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+	@GetMapping(path = "/{id}")
+	public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
+		var film = srv.getOne(id);
+		if (film.isEmpty())
+			throw new NotFoundException();
+		else
+			return FilmDTO.from(film.get());
+	}
+
+	@PostMapping
+	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTOCreate item)
+			throws BadRequestException, DuplicateKeyException, InvalidDataException {
+		if (item == null)
+			throw new BadRequestException("Faltan los datos");
+		Film newFilm = FilmDTOCreate.from(item);
+		var newItem = srv.add(newFilm);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newItem.getFilmId()).toUri();
-			return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).build();
+	}
 
-		}
+	@PutMapping("/{id}")
+	public FilmDTO update(@PathVariable int id, @Valid @RequestBody FilmDTOCreate item)
+			throws BadRequestException, NotFoundException, InvalidDataException {
+		if (item == null)
+			throw new BadRequestException("Faltan los datos");
+		if (id != item.getFilmId())
+			throw new BadRequestException("No coinciden los identificadores");
+		return FilmDTO.from(srv.modify(FilmDTOCreate.from(item)));
+	}
 
-		
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable int id) throws NotFoundException, InvalidDataException {
+		var film = srv.getOne(id);
+		if (film.isEmpty())
+			throw new NotFoundException();
+		else
+			film.get().getFilmActors().forEach(x -> {
+				try {
+					srvFilmActorService.delete(x);
+				} catch (InvalidDataException e) {
+					e.printStackTrace();
+				}
+			});
+		film.get().getFilmCategories().forEach(x -> {
+			try {
+				srvFilmCategoryService.delete(x);
+			} catch (InvalidDataException e) {
+				e.printStackTrace();
+			}
+		});
+		film.get().getInventories().forEach(x -> {
+			try {
+				x.getRentals().forEach(y -> {
+					try {
+						srvRentalService.delete(y);
+					} catch (InvalidDataException e) {
+						e.printStackTrace();
+					}
+				});
+				srvInventoryService.delete(x);
+			} catch (InvalidDataException e) {
+				e.printStackTrace();
+			}
+		});
+		srv.deleteById(id);
+	}
 
 }
