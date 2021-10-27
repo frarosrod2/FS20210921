@@ -1,5 +1,8 @@
 package com.example.application.resource;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.dtos.ActorDTO;
+
+import lombok.Data;
 
 @RestController
 public class DemosResource {
@@ -51,5 +57,18 @@ public class DemosResource {
 	public ActorDTO salidaPost(@RequestBody ActorDTO item) {
 		return item;
 	}
+	
+	@Autowired
+	RestTemplate rest;
+	
+	@Data
+	public static class Categorias{
+		private int id;
+		private String categoria;
+	}
 
+	@GetMapping("/categorias/{id}")
+	public Categorias traeDatos(@PathVariable int id){
+		return rest.getForObject("http://host.docker.internal:8010/categorias/{id}", Categorias.class, id);)
+	}
 }
