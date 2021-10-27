@@ -3,12 +3,14 @@ package com.example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import com.example.infrastructure.repositories.ActorRepository;
 
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @EnableOpenApi
+@EnableEurekaClient
 @SpringBootApplication
 public class DemoApplication {
 
