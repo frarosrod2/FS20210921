@@ -39,10 +39,13 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.swagger.annotations.Api;
+
 import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping(path = "/actores")
+@Api
 public class ActorResource {
 	@Autowired
 	ActorService srv;

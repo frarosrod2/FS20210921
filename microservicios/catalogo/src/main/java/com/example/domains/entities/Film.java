@@ -8,6 +8,7 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 import com.example.domains.core.EntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
@@ -80,19 +81,25 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	// bi-directional many-to-one association to FilmActor
 	@OneToMany(mappedBy = "film")
-	private List<FilmActor> filmActors;
+	private List<FilmActor> filmActors = new ArrayList<FilmActor>();;
 
 	// bi-directional many-to-one association to FilmCategory
-	@OneToMany(mappedBy = "film")
-	private List<FilmCategory> filmCategories;
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<FilmCategory> filmCategories= new ArrayList<FilmCategory>();;
 
 	// bi-directional many-to-one association to Inventory
-	@OneToMany(mappedBy = "film")
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Inventory> inventories;
 
 	public Film() {
 	}
 
+	public Film(int filmId) {
+		this.filmId = filmId;
+	}
+	
 	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
 			BigDecimal rentalRate, BigDecimal replacementCost, String title, Language language, Language languageVO) {
 		this.filmId = filmId;
@@ -106,7 +113,6 @@ public class Film extends EntityBase<Film> implements Serializable {
 		this.title = title;
 		this.language = language;
 		this.languageVO = languageVO;
-		this.filmActors = new ArrayList<FilmActor>();
 	}
 
 	public int getFilmId() {
@@ -115,6 +121,10 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	public void setFilmId(int filmId) {
 		this.filmId = filmId;
+		if(filmActors != null && filmActors.size() > 0)
+			filmActors.forEach(item -> { if(item.getId().getFilmId() != filmId) item.getId().setFilmId(filmId); });
+		if(filmCategories != null && filmCategories.size() > 0)
+			filmCategories.forEach(item -> { if(item.getId().getFilmId() != filmId) item.getId().setFilmId(filmId); });
 	}
 
 	public String getDescription() {
@@ -221,9 +231,9 @@ public class Film extends EntityBase<Film> implements Serializable {
 	}
 	
 	public FilmActor addFilmActor(Actor actor) {
-		FilmActor nuevo = new FilmActor(this, actor);
-		getFilmActors().add(nuevo);
-		return nuevo;
+		FilmActor filmActor = new FilmActor(this, actor);
+		getFilmActors().add(filmActor);
+		return filmActor;
 	}
 
 
@@ -248,6 +258,13 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 		return filmCategory;
 	}
+	
+	public FilmCategory addFilmcategory(Category category) {
+		FilmCategory nuevo = new FilmCategory(this, category);
+		getFilmCategories().add(nuevo);
+		return nuevo;
+	}
+
 
 	public FilmCategory removeFilmCategory(FilmCategory filmCategory) {
 		getFilmCategories().remove(filmCategory);

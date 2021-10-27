@@ -37,15 +37,22 @@ import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping(path = "/actores")
+@Api(value = "Manteniento de actores", description = "Permite mantener la lista de actores utilizados en el reparto de las peliculas")
 public class ActorResource {
 	@Autowired
 	ActorService srv;
 
 	@GetMapping
+	@ApiOperation(value = "Obtener todos los actores")
 	public List<ActorDTO> getAll(@RequestParam(required = false) String sort) {
 		if(sort== null)
 			return srv.getByProjection(ActorDTO.class);
@@ -53,11 +60,17 @@ public class ActorResource {
 			return (List<ActorDTO>) srv.getByProjection(Sort.by(sort), ActorDTO.class);
 	}
 
+	@ApiOperation(value = "Obtener actores paginados")
 	@GetMapping(params = "page")
 	public Page<ActorDTO> getAllPageable(Pageable item) {
 		return srv.getByProjection(item, ActorDTO.class);
 	}
 
+	@ApiOperation(value = "Obtener un actor")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Actor encontrado"),
+		@ApiResponse(code = 404, message = "Actor no encontrado")
+	})
 	@GetMapping(path = "/{id}")
 	public ActorDTO getOne(@PathVariable int id) throws NotFoundException {
 		var actor = srv.getOne(id);
@@ -67,6 +80,11 @@ public class ActorResource {
 			return ActorDTO.from(actor.get());
 	}
 
+	@ApiOperation(value = "Obtener todas las películas de un actor")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Actor encontrado"),
+		@ApiResponse(code = 404, message = "Actor no encontrado")
+	})
 	@GetMapping(path = "/{id}/peliculas")
 	@Transactional
 	public List<FilmShort> getPelis(@PathVariable int id) throws NotFoundException {
@@ -78,6 +96,12 @@ public class ActorResource {
 		}
 	}
 
+	@ApiOperation(value = "Añadir un nuevo actor")
+	@ApiResponses({
+		@ApiResponse(code = 201, message = "Actor añadido"),
+		@ApiResponse(code = 404, message = "Actor no encontrado")
+	})
+	@Transactional
 	@PostMapping
 	public ResponseEntity<Object> create(@Valid @RequestBody ActorDTO item) throws BadRequestException, DuplicateKeyException, InvalidDataException {
 		if(item == null)
@@ -89,8 +113,12 @@ public class ActorResource {
 
 	}
 
+	@ApiOperation(value = "Modificar un actor existente", notes = "Los identificadores deben coincidir")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Actor encontrado"),
+		@ApiResponse(code = 404, message = "Actor no encontrado")
+	})
 	@PutMapping("/{id}")
-	//@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ActorDTO update(@PathVariable int id, @Valid @RequestBody ActorDTO item) throws BadRequestException, NotFoundException, InvalidDataException {
 		if(item == null)
 			throw new BadRequestException("Faltan los datos");
@@ -99,6 +127,11 @@ public class ActorResource {
 		return ActorDTO.from(srv.modify(ActorDTO.from(item)));	
 	}
 
+	@ApiOperation(value = "Borrar un actor existente")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "Actor borrado"),
+		@ApiResponse(code = 404, message = "Actor no encontrado")
+	})
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int id) {

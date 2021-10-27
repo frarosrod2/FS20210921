@@ -3,6 +3,7 @@ package com.example.application.resource;
 import java.net.URI;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import com.example.domains.contracts.services.FilmCategoryService;
 import com.example.domains.contracts.services.FilmService;
 import com.example.domains.contracts.services.InventoryService;
 import com.example.domains.contracts.services.RentalService;
+import com.example.domains.entities.Actor;
+import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
 import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.FilmDTO;
@@ -36,11 +39,18 @@ import com.example.exceptions.BadRequestException;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.InvalidDataException;
 import com.example.exceptions.NotFoundException;
+import com.example.infrastructure.repositories.FilmRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.Value;
+import lombok.experimental.var;
 
 @RestController
 @RequestMapping(path = "/peliculas")
+@Api(value = "Manteniento de peliculas", description = "Permite mantener la lista de peliculas")
 public class FilmResource {
 	@Value
 	public static class PageCount {
@@ -50,6 +60,9 @@ public class FilmResource {
 
 	@Autowired
 	FilmService srv;
+	
+	@Autowired
+	FilmRepository dao;
 
 	@Autowired
 	FilmActorService srvFilmActorService;
@@ -63,6 +76,7 @@ public class FilmResource {
 	@Autowired
 	RentalService srvRentalService;	
 	
+	@ApiOperation(value = "Listado de las peliculas")
 	@GetMapping
 	public List<FilmDTO> getAll(@RequestParam(required = false) String sort) {
 		if (sort == null)
@@ -71,11 +85,17 @@ public class FilmResource {
 			return (List<FilmDTO>) srv.getByProjection(Sort.by(sort), FilmDTO.class);
 	}
 
+	@ApiOperation(value = "Listado con la versión paginada de las peliculas")
 	@GetMapping(params = "page")
 	public Page<FilmDTO> getAllPageable(Pageable item) {
 		return srv.getByProjection(item, FilmDTO.class);
 	}
 
+	@ApiOperation(value = "Obtener una película")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Película encontrada"),
+		@ApiResponse(code = 404, message = "Película no encontrada")
+	})
 	@GetMapping(path = "/{id}")
 	public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
 		var film = srv.getOne(id);
@@ -85,18 +105,36 @@ public class FilmResource {
 			return FilmDTO.from(film.get());
 	}
 
+	@ApiOperation(value = "Añadir una nueva película")
+	@ApiResponses({
+		@ApiResponse(code = 201, message = "Película añadida"),
+		@ApiResponse(code = 404, message = "Película no encontrada")
+	})
 	@PostMapping
+	@Transactional
 	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTOCreate item)
 			throws BadRequestException, DuplicateKeyException, InvalidDataException {
-		if (item == null)
-			throw new BadRequestException("Faltan los datos");
 		Film newFilm = FilmDTOCreate.from(item);
-		var newItem = srv.add(newFilm);
+		if (newFilm.isInvalid())
+			throw new InvalidDataException(newFilm.getErroString());
+		if (srv.getOne(item.getFilmId()).isPresent())
+			throw new InvalidDataException("Duplicate key");
+		var f = dao.save(newFilm);
+		item.getActors().stream()
+		.forEach(id -> newFilm.addFilmActor(new Actor(id)));
+		item.getCategories().stream()
+		.forEach(id -> newFilm.addFilmcategory(new Category(id)));
+		dao.save(newFilm);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(newItem.getFilmId()).toUri();
+				.buildAndExpand(newFilm.getFilmId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
+	@ApiOperation(value = "Modificar una película existente", notes = "Los identificadores deben coincidir")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Película encontrada"),
+		@ApiResponse(code = 404, message = "Película no encontrada")
+	})
 	@PutMapping("/{id}")
 	public FilmDTO update(@PathVariable int id, @Valid @RequestBody FilmDTOCreate item)
 			throws BadRequestException, NotFoundException, InvalidDataException {
@@ -107,6 +145,11 @@ public class FilmResource {
 		return FilmDTO.from(srv.modify(FilmDTOCreate.from(item)));
 	}
 
+	@ApiOperation(value = "Borrar una película existente")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "Película borrada"),
+		@ApiResponse(code = 404, message = "Película no encontrada")
+	})
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable int id) throws NotFoundException, InvalidDataException {

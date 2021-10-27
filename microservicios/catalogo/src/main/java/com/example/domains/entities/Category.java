@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.example.domains.core.EntityBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,12 +29,10 @@ public class Category extends EntityBase<Category> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Category(int categoryId) {
-		super();
 		this.categoryId = categoryId;
 	}
 
 	public Category(int categoryId, String name) {
-		super();
 		this.categoryId = categoryId;
 		this.name = name;
 	}
@@ -41,6 +40,7 @@ public class Category extends EntityBase<Category> implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "category_id")
+	@JsonProperty("id")
 	private int categoryId;
 
 	@Column(name = "last_update")

@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.infrastructure.repositories.ActorRepository;
 
+import springfox.documentation.oas.annotations.EnableOpenApi;
+
+@EnableOpenApi
 @SpringBootApplication
 public class DemoApplication {
 

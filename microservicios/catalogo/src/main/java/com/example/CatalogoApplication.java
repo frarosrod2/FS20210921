@@ -8,47 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import com.example.domains.contracts.services.CategoryService;
 import com.example.domains.entities.Category;
 import com.example.infrastructure.repositories.CategoryRepository;
 
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+@EnableOpenApi
 @SpringBootApplication
-public class CatalogoApplication implements CommandLineRunner{
+public class CatalogoApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(CatalogoApplication.class, args);
 	}
 	
-	@Autowired
-	CategoryRepository dao;
-	
-	@Autowired
-	CategoryService srv;
-	
-	@Override
-	@Transactional
-	public void run(String... args) throws Exception {
-		
-		Optional<Category> a = dao.findById(1);
-		System.out.println("TEST");
-		if(a.isPresent())
-			System.out.println(a.get());
-		else {
-			System.out.println("No encontrado");
-		}
-		
-		dao.findAll().forEach(System.out::println);
-	
-
-	Category cat= new Category(1, "");
-	if(cat.isInvalid()) {
-		cat.getErrors().forEach(item-> 
-		System.out.println(item.getPropertyPath() + ": " + item.getMessage())
-		);
-	}else {
-		System.out.println("Válido");
-	}
-
-}
 }

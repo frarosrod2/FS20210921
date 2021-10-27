@@ -12,6 +12,11 @@ public class FilmActorPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
+	public FilmActorPK(int filmId, int actorId) {
+		this.actorId = actorId;
+		this.filmId = filmId;
+	}
+	
 	@Column(name="actor_id", insertable=false, updatable=false)
 	private int actorId;
 

@@ -12,60 +12,61 @@ import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.Length;
 
 import com.example.domains.core.EntityBase;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * The persistent class for the actor database table.
  * 
  */
 @Entity
-@Table(name = "actor")
-@NamedQuery(name = "Actor.findAll", query = "SELECT a FROM Actor a")
+@Table(name="actor")
+@NamedQuery(name="Actor.findAll", query="SELECT a FROM Actor a")
 public class Actor extends EntityBase<Actor> implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="actor_id")
+	private int actorId;
+
+	@Column(name="first_name")
+	@NotBlank
+	@Length(min=2, max = 45)
+	private String firstName;
+
+	@Column(name="last_name")
+	@NotBlank
+	@Length(min=2, max = 45)
+	private String lastName;
+
+	@Column(name="last_update")
+	@Generated(value = GenerationTime.ALWAYS)
+	@PastOrPresent
+	private Timestamp lastUpdate;
+
+	//bi-directional many-to-one association to FilmActor
+	@OneToMany(mappedBy="actor")
+	@Valid
+	private List<FilmActor> filmActors = new ArrayList<FilmActor>();
+
+	public Actor() {
+	}
+
+	public Actor(int actorId) {
+		super();
+		this.actorId = actorId;
+	}
+
 	public Actor(int actorId, String firstName, String lastName) {
 		super();
 		this.actorId = actorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
-	}
-
-	public Actor(int actorId) {
-		this.actorId = actorId;
-	}
-
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "actor_id")
-	private int actorId;
-
-	@Column(name = "first_name")
-	@NotBlank
-	@Length(min=2, max=45)
-	private String firstName;
-
-	@Column(name = "last_name")
-	@NotBlank
-	@Length(min = 2, max = 45)
-	private String lastName;
-
-	@Column(name = "last_update")
-	@Generated(value = GenerationTime.ALWAYS)
-	@PastOrPresent
-	private Timestamp lastUpdate;
-
-	// bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy = "actor")
-	@Valid
-	@JsonIgnoreProperties("actor")
-	private List<FilmActor> filmActors;
-
-	public Actor() {
 	}
 
 	public int getActorId() {
@@ -75,7 +76,6 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	public void setActorId(int actorId) {
 		this.actorId = actorId;
 	}
-
 
 	public String getFirstName() {
 		return this.firstName;
@@ -93,10 +93,6 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getFullName() {
-		return this.firstName +' ' +this.lastName;
-	}
-	
 	public Timestamp getLastUpdate() {
 		return this.lastUpdate;
 	}
@@ -119,7 +115,13 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 
 		return filmActor;
 	}
-
+	public FilmActor addFilmActor(Film film) {
+		if(film == null)
+			throw new IllegalArgumentException("La pelicula es obligatoria");
+		var filmActor = new FilmActor(film, this);
+		getFilmActors().add(filmActor);
+		return filmActor;
+	}
 
 	public FilmActor removeFilmActor(FilmActor filmActor) {
 		getFilmActors().remove(filmActor);
@@ -152,14 +154,16 @@ public class Actor extends EntityBase<Actor> implements Serializable {
 	}
 
 	public void jubilate() {
-
+		
 	}
 
-	public void fire() {
-
+	public void despedido() {
+		
 	}
 
-	public void reward(String premio) {
-
+	public void darPremio(String premio) {
+		
 	}
+
+	
 }
