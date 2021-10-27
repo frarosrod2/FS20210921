@@ -111,7 +111,6 @@ public class FilmResource {
 		@ApiResponse(code = 404, message = "Película no encontrada")
 	})
 	@PostMapping
-	@Transactional
 	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTOCreate item)
 			throws BadRequestException, DuplicateKeyException, InvalidDataException {
 		Film newFilm = FilmDTOCreate.from(item);

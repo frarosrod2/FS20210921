@@ -26,17 +26,7 @@ import java.util.List;
 public class Film extends EntityBase<Film> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
-			String title, Language language) {
-		this.filmId = filmId;
-		this.length = length;
-		this.rating = rating;
-		this.description = description;
-		this.releaseYear = releaseYear;
-		this.rentalDuration = rentalDuration;
-		this.title = title;
-		this.language = language;
-	}
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,8 +38,7 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	@Column(name = "last_update")
 	@Generated(value = GenerationTime.ALWAYS)
-	@PastOrPresent
-	private Timestamp lastUpdate;
+	private Timestamp lastUpdate = new Timestamp(System.currentTimeMillis());
 
 	private int length;
 
@@ -80,8 +69,9 @@ public class Film extends EntityBase<Film> implements Serializable {
 	private Language languageVO;
 
 	// bi-directional many-to-one association to FilmActor
-	@OneToMany(mappedBy = "film")
-	private List<FilmActor> filmActors = new ArrayList<FilmActor>();;
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<FilmActor> filmActors = new ArrayList<FilmActor>();
 
 	// bi-directional many-to-one association to FilmCategory
 	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -98,6 +88,18 @@ public class Film extends EntityBase<Film> implements Serializable {
 
 	public Film(int filmId) {
 		this.filmId = filmId;
+	}
+	
+	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
+			String title, Language language) {
+		this.filmId = filmId;
+		this.length = length;
+		this.rating = rating;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.rentalDuration = rentalDuration;
+		this.title = title;
+		this.language = language;
 	}
 	
 	public Film(int filmId, int length, String rating, String description, Short releaseYear, byte rentalDuration,
