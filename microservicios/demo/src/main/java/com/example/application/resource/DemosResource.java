@@ -3,7 +3,11 @@ package com.example.application.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +18,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.application.proxies.CatalogoProxy;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.dtos.ActorDTO;
+import com.example.domains.entities.dtos.Categoria;
+import com.example.domains.entities.dtos.FilmShort;
 
 import lombok.Data;
 
@@ -61,14 +68,22 @@ public class DemosResource {
 	@Autowired
 	RestTemplate rest;
 	
-	@Data
-	public static class Categorias{
-		private int id;
-		private String categoria;
+	@Autowired
+	CatalogoProxy proxy;
+
+	@GetMapping("/categorias")
+	public List<Categoria> traeDatos() {
+		return proxy.getCategorias();
 	}
 
+
 	@GetMapping("/categorias/{id}")
-	public Categorias traeDatos(@PathVariable int id){
-		return rest.getForObject("http://host.docker.internal:8010/categorias/{id}", Categorias.class, id);)
+	public Categoria traeDatos(@PathVariable int id){
+		return proxy.getCategoria(id);
+	}
+	
+	@GetMapping("/categorias/{id}/peliculas")
+	public List<FilmShort> traePelis(@PathVariable int id){
+		return proxy.getPeliculasCategoria(id);
 	}
 }
