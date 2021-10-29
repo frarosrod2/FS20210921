@@ -1,7 +1,9 @@
 package com.example.application.resource;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +36,6 @@ import com.example.domains.contracts.services.RentalService;
 import com.example.domains.entities.Actor;
 import com.example.domains.entities.Category;
 import com.example.domains.entities.Film;
-import com.example.domains.entities.dtos.ActorDTO;
 import com.example.domains.entities.dtos.FilmDTO;
 import com.example.domains.entities.dtos.FilmDTOCreate;
 import com.example.exceptions.BadRequestException;
@@ -46,7 +49,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.Value;
-import lombok.experimental.var;
 
 @RestController
 @RequestMapping(path = "/peliculas")
@@ -60,7 +62,7 @@ public class FilmResource {
 
 	@Autowired
 	FilmService srv;
-	
+
 	@Autowired
 	FilmRepository dao;
 
@@ -69,14 +71,15 @@ public class FilmResource {
 
 	@Autowired
 	FilmCategoryService srvFilmCategoryService;
-	
+
 	@Autowired
 	InventoryService srvInventoryService;
-	
+
 	@Autowired
-	RentalService srvRentalService;	
-	
+	RentalService srvRentalService;
+
 	@ApiOperation(value = "Listado de las peliculas")
+	@Transactional
 	@GetMapping
 	public List<FilmDTO> getAll(@RequestParam(required = false) String sort) {
 		if (sort == null)
@@ -92,24 +95,22 @@ public class FilmResource {
 	}
 
 	@ApiOperation(value = "Obtener una película")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Película encontrada"),
-		@ApiResponse(code = 404, message = "Película no encontrada")
-	})
+	@ApiResponses({ @ApiResponse(code = 200, message = "Película encontrada"),
+			@ApiResponse(code = 404, message = "Película no encontrada") })
 	@GetMapping(path = "/{id}")
 	public FilmDTO getOne(@PathVariable int id) throws NotFoundException {
-		var film = srv.getOne(id);
+		Optional<Film> film = srv.getOne(id);
 		if (film.isEmpty())
 			throw new NotFoundException();
 		else
 			return FilmDTO.from(film.get());
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Añadir una nueva película")
-	@ApiResponses({
-		@ApiResponse(code = 201, message = "Película añadida"),
-		@ApiResponse(code = 404, message = "Película no encontrada")
-	})
+	@ApiResponses({ @ApiResponse(code = 201, message = "Película añadida"),
+			@ApiResponse(code = 404, message = "Película no encontrada") })
+	@Transactional
 	@PostMapping
 	public ResponseEntity<Object> create(@Valid @RequestBody FilmDTOCreate item)
 			throws BadRequestException, DuplicateKeyException, InvalidDataException {
@@ -118,22 +119,20 @@ public class FilmResource {
 			throw new InvalidDataException(newFilm.getErroString());
 		if (srv.getOne(item.getFilmId()).isPresent())
 			throw new InvalidDataException("Duplicate key");
-		var f = dao.save(newFilm);
-		item.getActors().stream()
-		.forEach(id -> newFilm.addFilmActor(new Actor(id)));
-		item.getCategories().stream()
-		.forEach(id -> newFilm.addFilmcategory(new Category(id)));
+		dao.save(newFilm);
+		item.getActors().stream().forEach(id -> newFilm.addFilmActor(new Actor(id)));
+		item.getCategories().stream().forEach(id -> newFilm.addFilmCategory(new Category(id)));
 		dao.save(newFilm);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newFilm.getFilmId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
+	@Secured({ "ROLE_USER" })
 	@ApiOperation(value = "Modificar una película existente", notes = "Los identificadores deben coincidir")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Película encontrada"),
-		@ApiResponse(code = 404, message = "Película no encontrada")
-	})
+	@ApiResponses({ @ApiResponse(code = 200, message = "Película encontrada"),
+			@ApiResponse(code = 404, message = "Película no encontrada") })
+	@Transactional
 	@PutMapping("/{id}")
 	public FilmDTO update(@PathVariable int id, @Valid @RequestBody FilmDTOCreate item)
 			throws BadRequestException, NotFoundException, InvalidDataException {
@@ -141,50 +140,29 @@ public class FilmResource {
 			throw new BadRequestException("Faltan los datos");
 		if (id != item.getFilmId())
 			throw new BadRequestException("No coinciden los identificadores");
-		return FilmDTO.from(srv.modify(FilmDTOCreate.from(item)));
+		Optional<Film> act = dao.findById(item.getFilmId());
+		if (!act.isPresent())
+			throw new NotFoundException("Missing item");
+		Film rslt = dao.save(item.update(act.get()));
+		return FilmDTO.from(rslt);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Borrar una película existente")
-	@ApiResponses({
-		@ApiResponse(code = 204, message = "Película borrada"),
-		@ApiResponse(code = 404, message = "Película no encontrada")
-	})
+	@ApiResponses({ @ApiResponse(code = 204, message = "Película borrada"),
+			@ApiResponse(code = 404, message = "Película no encontrada") })
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable int id) throws NotFoundException, InvalidDataException {
-		var film = srv.getOne(id);
-		if (film.isEmpty())
-			throw new NotFoundException();
-		else
-			film.get().getFilmActors().forEach(x -> {
-				try {
-					srvFilmActorService.delete(x);
-				} catch (InvalidDataException e) {
-					e.printStackTrace();
-				}
-			});
-		film.get().getFilmCategories().forEach(x -> {
-			try {
-				srvFilmCategoryService.delete(x);
-			} catch (InvalidDataException e) {
-				e.printStackTrace();
-			}
-		});
-		film.get().getInventories().forEach(x -> {
-			try {
-				x.getRentals().forEach(y -> {
-					try {
-						srvRentalService.delete(y);
-					} catch (InvalidDataException e) {
-						e.printStackTrace();
-					}
-				});
-				srvInventoryService.delete(x);
-			} catch (InvalidDataException e) {
-				e.printStackTrace();
-			}
-		});
-		srv.deleteById(id);
+	public void delete(@PathVariable int id) throws Exception {
+		try {
+			dao.deleteById(id);
+		} catch (Exception e) {
+			throw new NotFoundException("Missing item", e);
+		}
+	}
+	
+	public List<Film> novedades(Timestamp fecha) {
+		return dao.findByLastUpdateGreaterThanEqualOrderByLastUpdate(fecha);
 	}
 
 }
