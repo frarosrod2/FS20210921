@@ -1,0 +1,15 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// .navbar {
+//   height: 100px;
+// }
+
+li{
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+@media only screen and (max-width: 576px) {
+  .login{
+    margin-top:25px;
+    text-align:center;
+  }
+}
