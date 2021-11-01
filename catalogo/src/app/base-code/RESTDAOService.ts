@@ -8,6 +8,6 @@ query(): Observable<Array<T>> { return this.http.get<Array<T>>(this.baseUrl, thi
 get(id: K): Observable<T> { return this.http.get<T>(this.baseUrl+ '/' +id, this.option); }
 add(item: T): Observable<T>  { return this.http.post<T>(this.baseUrl, item, this.option); }
 change(id: K, item: T): Observable<T> {return this.http.put<T>(this.baseUrl + '/' + id, item, this.option);}
-remove(id: K): Observable<T> { return this.http.delete<T>(this.baseUrl + '/' + id, this.option); }
+remove(id: K, option: T): Observable<T> { return this.http.delete<T>(this.baseUrl + '/' + id, option); }
 }
 

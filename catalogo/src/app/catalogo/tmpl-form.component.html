@@ -1,0 +1,192 @@
+<form #miForm="ngForm">
+  <div class="px-3 px-sm-2 px-lg-4 px-xl-6 mt-3">
+    <div class="row">
+      <div class="form-group col-md-6 mb-2 px-4">
+        <label class="form-label" for="filmId">Código:</label>
+        <input
+          class="form-control"
+          [class.is-invalid]="filmId.invalid && miForm.dirty"
+          type="number"
+          name="filmId"
+          id="filmId"
+          [(ngModel)]="VM.Elemento.filmId"
+          #filmId="ngModel"
+          required
+          min="0"
+        />
+        <output class="text-danger" [myShowErrors]="filmId.errors"></output>
+      </div>
+      <div class="form-group col-md-6 mb-2 px-4">
+        <label for="titulo" class="form-label">Título</label>
+        <input
+          required
+          type="text"
+          class="form-control"
+          name="titulo"
+          id="titulo"
+          required
+          maxlength="80"
+          [(ngModel)]="VM.Elemento.title"
+          #titulo="ngModel"
+        />
+        <output class="text-danger" [myShowErrors]="titulo.errors"></output>
+      </div>
+
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="duracion" class="form-label">Duración:</label>
+        <input
+          type="number"
+          class="form-control"
+          name="duracion"
+          id="duracion"
+          min="0"
+          [(ngModel)]="VM.Elemento.length"
+          #duracion="ngModel"
+        />
+        <output class="text-danger" [myShowErrors]="duracion.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="anyo" class="form-label">Año de lanzamiento:</label>
+        <input
+          type="number"
+          min="1900"
+          max="2030"
+          class="form-control"
+          id="anyo"
+          name="anyo"
+          [(ngModel)]="VM.Elemento.releaseYear"
+          #anyo="ngModel"
+        />
+        <output class="text-danger" [myShowErrors]="anyo.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="duracionAlq" class="form-label"
+          >Duración del alquiler:</label
+        >
+        <input
+          required
+          type="number"
+          min="0"
+          max="15"
+          class="form-control"
+          id="duracionAlq"
+          name="duracionAlq"
+          [(ngModel)]="VM.Elemento.rentalDuration"
+          #duracionAlq="ngModel"
+        />
+        <output
+          class="text-danger"
+          [myShowErrors]="duracionAlq.errors"
+        ></output>
+      </div>
+      <div class="form-group col-md-4 mb-2">
+        <label for="descripcion" class="form-label">Descripción:</label>
+        <textarea
+          class="form-control"
+          [(ngModel)]="VM.Elemento.description"
+          style="height: 100px"
+          name="descripcion"
+          #descripcion="ngModel"
+          maxlength="100"
+        ></textarea>
+        <output
+          class="text-danger"
+          [myShowErrors]="descripcion.errors"
+        ></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="calAlq" class="form-label"
+          >Calificación del alquiler:</label
+        >
+        <input
+          required
+          type="number"
+          min="0"
+          max="10"
+          class="form-control"
+          id="calAlq"
+          name="calAlq"
+          [(ngModel)]="VM.Elemento.rentalRate"
+          #calAlq="ngModel"
+        />
+        <output class="text-danger" [myShowErrors]="calAlq.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="repCost" class="form-label">Coste de reemplazo:</label>
+        <input
+          required
+          type="number"
+          min="0"
+          class="form-control"
+          id="repCost"
+          name="repCost"
+          [(ngModel)]="VM.Elemento.replacementCost"
+          #repCost="ngModel"
+        />
+        <output class="text-danger" [myShowErrors]="repCost.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="rating" class="form-label">Calificación:</label>
+        <select
+          class="form-select"
+          id="rating"
+          aria-label="Floating label select example"
+          [(ngModel)]="VM.Elemento.rating"
+          #rating="ngModel"
+          [(value)]="VM.Elemento.rating"
+        >
+          <option value="G">G</option>
+          <option value="PG">PG</option>
+          <option value="PG-13">PG-13</option>
+          <option value="R">R</option>
+          <option value="NC-17">NC-17</option>
+        </select>
+        <output class="text-danger" [myShowErrors]="rating.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="language" class="form-label">Idioma:</label>
+        <select
+          required
+          class="form-select"
+          id="language"
+          aria-label="Floating label select example"
+          [(ngModel)]="VM.Elemento.languageId"
+          #language="ngModel"
+          [(value)]="VM.Elemento.language"
+        >
+          <option value="1">English</option>
+          <option value="2">Italian</option>
+          <option value="3">Japanese</option>
+          <option value="4">Mandarin</option>
+          <option value="5">French</option>
+          <option value="6">German</option>
+        </select>
+        <output class="text-danger" [myShowErrors]="language.errors"></output>
+      </div>
+      <div class="form-group col-md-4 mb-2 px-3">
+        <label for="languageVO" class="form-label">Idioma original:</label>
+        <select
+          class="form-select"
+          id="languageVO"
+          aria-label="Floating label select example"
+          [(ngModel)]="VM.Elemento.languageVO"
+          #languageVO="ngModel"
+          [(value)]="VM.Elemento.languageVO"
+        >
+          <option value="1">English</option>
+          <option value="2">Italian</option>
+          <option value="3">Japanese</option>
+          <option value="4">Mandarin</option>
+          <option value="5">French</option>
+          <option value="6">German</option>
+        </select>
+        <output class="text-danger" [myShowErrors]="languageVO.errors"></output>
+      </div>
+    </div>
+    <app-form-buttons
+      (send)="VM.send()"
+      [send-disabled]="miForm.invalid"
+      (cancel)="VM.cancel()"
+    ></app-form-buttons>
+  </div>
+</form>

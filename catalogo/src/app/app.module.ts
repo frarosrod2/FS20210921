@@ -11,6 +11,7 @@ import { SecurityModule } from './security';
 import { environment } from 'src/environments/environment';
 import { CommonComponentModule } from './common-component/common-component.module';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
+import { CatalogoComponent, CatalogoModule } from './catalogo';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
   imports: [
     BrowserModule, FormsModule, HttpClientModule,
     AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule, CommonComponentModule,
-    SecurityModule
+    SecurityModule, CatalogoModule
   ],
   providers: [LoggerService,
   {provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL}, { provide: LOCALE_ID, useValue: 'es-ES'},

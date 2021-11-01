@@ -4,7 +4,7 @@ import { CatalogoViewModelService } from './catalogo.service';
 
 @Component({
   selector: 'app-catalogo',
-  templateUrl: './catalogo.component.html',
+  templateUrl: './tmpl-anfitrion.component.html',
   providers: [CatalogoViewModelService],
   styleUrls: ['./catalogo.component.scss']
 })
@@ -30,9 +30,55 @@ export class CatalogoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.vm.clear()
   }
+}
 
+@Component({
+  selector: 'app-catalogo-list',
+  templateUrl: './tmpl-list.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoListComponent implements OnInit, OnDestroy {
+  constructor(protected vm: CatalogoViewModelService) { }
+  public get VM(): CatalogoViewModelService { return this.vm; }
+  ngOnInit(): void { }
+  ngOnDestroy(): void { }
 }
 
 
-export const
-CATALOGOS_COMPONENTES = [CatalogoComponent]
+@Component({
+  selector: 'app-catalogo-add',
+  templateUrl: './tmpl-form.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoAddComponent implements OnInit {
+  constructor(protected vm: CatalogoViewModelService) { }
+  public get VM(): CatalogoViewModelService { return this.vm; }
+  ngOnInit(): void { }
+}
+
+@Component({
+  selector: 'app-catalogo-edit',
+  templateUrl: './tmpl-form.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoEditComponent implements OnInit, OnDestroy {
+  constructor(protected vm: CatalogoViewModelService) { }
+  public get VM(): CatalogoViewModelService { return this.vm; }
+  ngOnInit(): void { }
+  ngOnDestroy(): void { }
+}
+
+@Component({
+  selector: 'app-catalogo-view',
+  templateUrl: './tmpl-view.component.html',
+  styleUrls: ['./catalogo.component.scss']
+})
+export class CatalogoViewComponent implements OnInit, OnDestroy {
+  constructor(protected vm: CatalogoViewModelService) { }
+  public get VM(): CatalogoViewModelService { return this.vm; }
+  ngOnInit(): void { }
+  ngOnDestroy(): void { }
+}
+
+export const CATALOGOS_COMPONENTES = [CatalogoComponent, CatalogoListComponent, CatalogoAddComponent,
+CatalogoEditComponent, CatalogoViewComponent]

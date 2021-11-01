@@ -7,12 +7,11 @@
         [ngModelOptions]="{standalone: true}">
       <div class="input-group-append">
         <input class="btn btn-outline-success btn-sm" type="button" [disabled]="logForm.invalid" value="Enviar" (click)="logInOut()">
-        <input class="btn btn-outline-success btn-sm" type="button" value="Registrar" (click)="registrar()">
       </div>
     </div>
   </form>
 </ng-container>
-<small *ngIf="loginSrv.isAutenticated">
+<small class="text-primary" *ngIf="loginSrv.isAutenticated">
   Hola {{loginSrv.Name}}
-  <input class="btn btn-outline-success btn-sm" type="button" value="Desconectar" (click)="logInOut()">
+  <input class="btn btn-outline-success btn-sm ms-2" type="button" value="Desconectar" (click)="logInOut()">
 </small>

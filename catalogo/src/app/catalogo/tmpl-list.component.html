@@ -1,0 +1,34 @@
+<div class="container mt-4 px-3 px-lg-5 px-sm-2">
+  <div class="row">
+  <div class="col-md-6 col-12" *ngFor="let item of VM.Listado">
+    <div class="card mb-4 px-1 px-sm-2 px-lg-4">
+      <div class="card-body">
+        <div class="small text-muted">{{ item.releaseYear!==null ? item.releaseYear : 'Año desconocido' }} - {{item.language}}</div>
+        <h2 class="card-title">{{ item.title }}</h2>
+        <p class="card-text">{{item.description !== null ? (item.description | elipsis: 200) : 'Sin descripción'}}</p>
+        <p *ngIf="item.length!==null; else elseTemplate" class="small text-muted" >Duración: {{item.length}} min.</p>
+        <ng-template #elseTemplate>
+          Duración desconocida
+        </ng-template>
+        <p class="small text-muted">Duración de alquiler: {{item.rentalDuration}} día/s</p>
+        <a class="btn btn-primary" [routerLink]="[item.filmId]"
+          >Leer más →</a
+        >
+        <button *ngIf="VM.isAutenticated" class="btn btn-success" [routerLink]="[item.filmId, 'edit']">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button *ngIf="VM.isAutenticated" class="btn btn-danger" (click)="VM.delete(item.filmId)"><i class="bi bi-trash"></i></button>
+        <ng-container [ngSwitch]="item.rating">
+          <img class="rating-img" *ngSwitchCase="'G'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/RATED_G.svg/69px-RATED_G.svg.png" alt="rating"/>
+          <img class="rating-img" *ngSwitchCase="'PG'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/RATED_PG.svg/114px-RATED_PG.svg.png" alt="rating"/>
+          <img class="rating-img2" *ngSwitchCase="'PG-13'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/RATED_PG-13.svg/213px-RATED_PG-13.svg.png" alt="rating"/>
+          <img class="rating-img" *ngSwitchCase="'R'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/RATED_R.svg/69px-RATED_R.svg.png" alt="rating"/>
+          <img class="rating-img2" *ngSwitchDefault src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Nc-17.svg/204px-Nc-17.svg.png" alt="rating"/>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<p-paginator [first]="VM.rowsPerPage*VM.page" [rows]="VM.rowsPerPage" [totalRecords]="VM.totalPages*VM.rowsPerPage"
+    [pageLinkSize]="5" (onPageChange)="VM.load($event.page)"></p-paginator>

@@ -6,15 +6,14 @@ import { LoggerService } from 'src/lib/my-core';
 import { RESTDAOService } from '../base-code/RESTDAOService';
 import { ModoCRUD } from '../base-code/tipos';
 import { NavigationService, NotificationService } from '../common-services';
-import { AUTH_REQUIRED } from '../security';
+import { AuthService, AUTH_REQUIRED } from '../security';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogoDAOService extends RESTDAOService<any, any> {
   constructor(http: HttpClient) {
-    super(http, '', {
-      withCredentials: true,
+    super(http, 'peliculas', {
       context: new HttpContext().set(AUTH_REQUIRED, true),
     });
   }
@@ -29,25 +28,25 @@ export class CatalogoDAOService extends RESTDAOService<any, any> {
   }> {
     return new Observable((subscriber) => {
       this.http
-        .get<{ pages: number; rows: number }>(
-          `${this.baseUrl}?_page=count&_rows=${rows}`,
+        .get<{ totalPages: number; size: number }>(
+          `${this.baseUrl}?page=count&size=${rows}`,
           this.option
         )
         .subscribe(
           (data) => {
-            if (page >= data.pages) page = data.pages > 0 ? data.pages - 1 : 0;
+            if (page >= data.totalPages) page = data.totalPages > 0 ? data.totalPages - 1 : 0;
             this.http
-              .get<Array<any>>(
-                `${this.baseUrl}?_page=${page}&_rows=${rows}&_sort=nombre`,
+              .get<any>(
+                `${this.baseUrl}?page=${page}&size=${rows}&sort=filmId,DESC`,
                 this.option
               )
               .subscribe(
                 (lst) =>
                   subscriber.next({
                     page,
-                    pages: data.pages,
-                    rows: data.rows,
-                    list: lst,
+                    pages: data.totalPages,
+                    rows: data.size,
+                    list: lst.content,
                   }),
                 (err) => subscriber.error(err)
               );
@@ -69,11 +68,13 @@ export class CatalogoViewModelService {
   protected listURL = '/';
 
   constructor(
+    private http: HttpClient,
     protected notify: NotificationService,
     protected out: LoggerService,
     private navigation: NavigationService,
     protected dao: CatalogoDAOService,
-    protected router: Router
+    protected router: Router,
+    protected auth: AuthService
   ) {}
 
   public get Modo(): ModoCRUD {
@@ -85,6 +86,13 @@ export class CatalogoViewModelService {
   public get Elemento(): any {
     return this.elemento;
   }
+
+  public get isAutenticated() {
+    return this.auth.isAutenticated;
+  }
+
+  get AuthorizationHeader() { return this.auth.AuthorizationHeader;  }
+
 
   public list(): void {
     this.dao.query().subscribe(
@@ -124,8 +132,8 @@ export class CatalogoViewModelService {
   public delete(key: any): void {
     if (!window.confirm('¿Seguro?')) { return; }
 
-    this.dao.remove(key).subscribe(
-      data => this.list(),
+    this.dao.remove(key, {headers: {'Authorization': this.AuthorizationHeader}}).subscribe(
+      data => this.load(),
       err => this.notify.add(err.message)
     );
   }
