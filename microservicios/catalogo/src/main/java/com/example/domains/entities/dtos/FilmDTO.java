@@ -1,6 +1,7 @@
 package com.example.domains.entities.dtos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,10 @@ public class FilmDTO {
 	private Short releaseYear;
 	@ApiModelProperty(value = "Duración de alquiler de pelicula" )
 	private byte rentalDuration;
+	@ApiModelProperty(value = "Calificación de alquiler de pelicula" )
+	private Double rentalRate;
+	@ApiModelProperty(value = "Precio de reemplazo" )
+	private Double replacementCost;
 	@ApiModelProperty(value = "Titulo de la pelicula", required = true, allowableValues = "Un maximo de 255 caracteres")
 	private String title;
 	@ApiModelProperty(value = "Idioma de la pelicula" )
@@ -49,11 +54,12 @@ public class FilmDTO {
 
 	public static FilmDTO from(Film source) {
 		return new FilmDTO(source.getFilmId(), source.getLength(), source.getRating(), source.getDescription(),
-				source.getReleaseYear(), source.getRentalDuration(), source.getTitle(), source.getLanguage().getName(),
-				source.getLanguageVO() != null ? source.getLanguageVO().getName() : null,
+				source.getReleaseYear(), source.getRentalDuration(), source.getRentalRate().doubleValue(),
+				source.getReplacementCost().doubleValue(), source.getTitle(), source.getLanguage().getName(),
+				source.getLanguageVO() != null ? source.getLanguageVO().getName() : "Desconocido",
 				source.getFilmActors() != null ? source.getFilmActors().stream().map(x -> x.getActor().getFirstName())
-						.collect(Collectors.toList()) : null,
+						.collect(Collectors.toList()) : new ArrayList<String>(),
 				source.getFilmCategories() != null ? source.getFilmCategories().stream()
-						.map(x -> x.getCategory().getName()).collect(Collectors.toList()) : null);
+						.map(x -> x.getCategory().getName()).collect(Collectors.toList()) : new ArrayList<String>());
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
@@ -39,15 +39,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and()
-			.csrf().disable()			
-			.addFilterAfter(new JWTAuthorizationFilter(SECRET), UsernamePasswordAuthenticationFilter.class)
-			.authorizeRequests()
-			.anyRequest().permitAll();
-//			.antMatchers(HttpMethod.GET, "/api/contactos/**").permitAll()
-////			.antMatchers(HttpMethod.POST, "/api/contactos").authenticated()
-////			.antMatchers(HttpMethod.PUT, "/api/contactos").authenticated()
-////			.antMatchers(HttpMethod.DELETE, "/api/contactos").authenticated()
-//			.anyRequest().authenticated()
-			;
+		.csrf().disable()			
+		.addFilterAfter(new JWTAuthorizationFilter(SECRET), UsernamePasswordAuthenticationFilter.class)
+		.authorizeRequests()
+//		.anyRequest().permitAll()
+		.antMatchers(HttpMethod.GET, "/peliculas/**").permitAll()
+////		.antMatchers(HttpMethod.POST, "/api/contactos").authenticated()
+////		.antMatchers(HttpMethod.PUT, "/api/contactos").authenticated()
+////		.antMatchers(HttpMethod.DELETE, "/api/contactos").authenticated()
+		.anyRequest().authenticated()
+		;
 	}
 }

@@ -30,7 +30,6 @@ public class Inventory implements Serializable {
 	//bi-directional many-to-one association to Film
 	@ManyToOne
 	@JoinColumn(name="film_id")
-	@JsonIgnoreProperties("inventories")
 	private Film film;
 
 	//bi-directional many-to-one association to Store
@@ -39,7 +38,7 @@ public class Inventory implements Serializable {
 	private Store store;
 
 	//bi-directional many-to-one association to Rental
-	@OneToMany(mappedBy="inventory")
+	@OneToMany(mappedBy="inventory", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Rental> rentals;
 
 	public Inventory() {
