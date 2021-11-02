@@ -57,8 +57,8 @@ public class FilmDTO {
 				source.getReleaseYear(), source.getRentalDuration(), source.getRentalRate().doubleValue(),
 				source.getReplacementCost().doubleValue(), source.getTitle(), source.getLanguage().getName(),
 				source.getLanguageVO() != null ? source.getLanguageVO().getName() : "Desconocido",
-				source.getFilmActors() != null ? source.getFilmActors().stream().map(x -> x.getActor().getFirstName())
-						.collect(Collectors.toList()) : new ArrayList<String>(),
+				source.getFilmActors() != null ? source.getFilmActors().stream().map(x -> x.getActor().getFirstName() +" " 
+				+x.getActor().getLastName()).collect(Collectors.toList()) : new ArrayList<String>(),
 				source.getFilmCategories() != null ? source.getFilmCategories().stream()
 						.map(x -> x.getCategory().getName()).collect(Collectors.toList()) : new ArrayList<String>());
 	}
