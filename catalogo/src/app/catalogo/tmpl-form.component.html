@@ -128,6 +128,7 @@
       <div class="form-group col-md-4 mb-2 px-3">
         <label for="rating" class="form-label">Calificación:</label>
         <select
+          name="rating"
           class="form-select"
           id="rating"
           aria-label="Floating label select example"
@@ -146,41 +147,72 @@
       <div class="form-group col-md-4 mb-2 px-3">
         <label for="language" class="form-label">Idioma:</label>
         <select
-          required
+          name="language"
           class="form-select"
           id="language"
           aria-label="Floating label select example"
-          [(ngModel)]="VM.Elemento.languageId"
+          [(ngModel)]="VM.Elemento.language"
           #language="ngModel"
-          [(value)]="VM.Elemento.language"
+          required
         >
-          <option value="1">English</option>
-          <option value="2">Italian</option>
-          <option value="3">Japanese</option>
-          <option value="4">Mandarin</option>
-          <option value="5">French</option>
-          <option value="6">German</option>
+          <option selected hidden value="null">Please select</option>
+          <option *ngFor="let l of VM.Languages" [ngValue]="l.name">
+            {{ l.name }}
+          </option>
         </select>
         <output class="text-danger" [myShowErrors]="language.errors"></output>
       </div>
       <div class="form-group col-md-4 mb-2 px-3">
         <label for="languageVO" class="form-label">Idioma original:</label>
         <select
+          name="languageVO"
           class="form-select"
           id="languageVO"
           aria-label="Floating label select example"
           [(ngModel)]="VM.Elemento.languageVO"
           #languageVO="ngModel"
-          [(value)]="VM.Elemento.languageVO"
         >
-          <option value="1">English</option>
-          <option value="2">Italian</option>
-          <option value="3">Japanese</option>
-          <option value="4">Mandarin</option>
-          <option value="5">French</option>
-          <option value="6">German</option>
+          <option *ngFor="let l of VM.Languages" [ngValue]="l.name">
+            {{ l.name }}
+          </option>
+          <option selected [ngValue]="'Desconocido'">-</option>
         </select>
         <output class="text-danger" [myShowErrors]="languageVO.errors"></output>
+      </div>
+      <div class="form-group col-md-6 mb-2 px-3">
+        <p for="actors">Actores:</p>
+        <p-multiSelect
+          width="100%"
+          name="actors"
+          #actors="ngModel"
+          [options]="VM.ListadoActores"
+          [(ngModel)]="VM.Elemento.actors"
+          optionLabel="firstName"
+          optionValue="actorId"
+          [virtualScroll]="true"
+          display="chip"
+        >
+          <ng-template let-actor pTemplate="item">
+            <div class="actor-item">
+              <div>{{ actor.firstName }} {{ actor.lastName }}</div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+      </div>
+      <div class="form-group col-md-6 mb-2 px-3">
+        <p for="actors">Categorías:</p>
+        <p-multiSelect
+          width="100%"
+          name="categories"
+          #actors="ngModel"
+          [options]="VM.ListadoCategorias"
+          [(ngModel)]="VM.Elemento.categories"
+          optionLabel="name"
+          optionValue="categoryId"
+          [virtualScroll]="true"
+          display="chip"
+        >
+        </p-multiSelect>
       </div>
     </div>
     <app-form-buttons

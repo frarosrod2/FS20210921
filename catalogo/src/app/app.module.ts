@@ -18,7 +18,7 @@ import { CatalogoComponent, CatalogoModule } from './catalogo';
     AppComponent,
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule,
+    BrowserModule, HttpClientModule,
     AppRoutingModule, MyCoreModule, MainModule, CommonServicesModule, CommonComponentModule,
     SecurityModule, CatalogoModule
   ],

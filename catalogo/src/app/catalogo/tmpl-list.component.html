@@ -1,4 +1,9 @@
 <div class="container mt-4 px-3 px-lg-5 px-sm-2">
+  <div class="text-center mb-3" *ngIf="VM.isAutenticated">
+    <a class="btn btn-primary" [routerLink]="['/add']"
+      >+ Añadir nueva pelicula</a
+    >
+  </div>
   <div class="row">
   <div class="col-md-6 col-12" *ngFor="let item of VM.Listado">
     <div class="card mb-4 px-1 px-sm-2 px-lg-4">

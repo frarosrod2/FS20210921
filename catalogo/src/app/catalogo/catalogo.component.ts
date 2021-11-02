@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { combineLatest, forkJoin } from 'rxjs';
 import { CatalogoViewModelService } from './catalogo.service';
 
 @Component({
@@ -16,7 +17,17 @@ export class CatalogoComponent implements OnInit, OnDestroy {
     let id = this.route.snapshot.params['id'];
     if (id) {
       if (this.route.snapshot.url.slice(-1)[0]?.path === 'edit') {
-        this.vm.edit(+id);
+         
+         const actors$ = this.vm.listActors();
+         const cat$ = this.vm.listCategories();
+         forkJoin([actors$, cat$]).subscribe(results => {
+          // results[0] is our character
+          // results[1] is our character homeworld
+          this.vm.ListadoActores = results[0];
+          this.vm.ListadoCategorias = results[1];
+          this.vm.edit(+id);
+        });
+        // 
       } else {
         this.vm.view(+id);
       }
