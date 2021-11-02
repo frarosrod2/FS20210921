@@ -1,0 +1,26 @@
+<div class="container mt-4 px-3 px-lg-5 px-sm-2">
+  <div class="row">
+<div class="card mb-4 px-1 px-sm-2 px-lg-4">
+  <div class="card-body">
+    <div class="small text-muted">{{ VM.Elemento.releaseYear!==null ? VM.Elemento.releaseYear : 'Año desconocido' }} - {{VM.Elemento.language}}</div>
+    <h2 class="card-title">{{ VM.Elemento.title }}</h2>
+    <p class="card-text">{{VM.Elemento.description !== null ? (VM.Elemento.description | elipsis: 200) : 'Sin descripción'}}</p>
+    <p *ngIf="VM.Elemento.length!==null; else elseTemplate" class="small text-muted" >Duración: {{VM.Elemento.length}} min.</p>
+    <ng-template #elseTemplate>
+      Duración desconocida
+    </ng-template>
+    <p class="small text-muted">Duración de alquiler: {{VM.Elemento.rentalDuration}} día/s</p>
+    <button *ngIf="VM.isAutenticated" class="btn btn-success" [routerLink]="['edit']">
+      <i class="bi bi-pencil"></i>
+    </button>
+    <ng-container [ngSwitch]="VM.Elemento.rating">
+      <img class="rating-img" *ngSwitchCase="'G'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/RATED_G.svg/69px-RATED_G.svg.png" alt="rating"/>
+      <img class="rating-img" *ngSwitchCase="'PG'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/RATED_PG.svg/114px-RATED_PG.svg.png" alt="rating"/>
+      <img class="rating-img2" *ngSwitchCase="'PG-13'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/RATED_PG-13.svg/213px-RATED_PG-13.svg.png" alt="rating"/>
+      <img class="rating-img" *ngSwitchCase="'R'" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/RATED_R.svg/69px-RATED_R.svg.png" alt="rating"/>
+      <img class="rating-img2" *ngSwitchDefault src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Nc-17.svg/204px-Nc-17.svg.png" alt="rating"/>
+    </ng-container>
+  </div>
+</div>
+</div>
+</div>
