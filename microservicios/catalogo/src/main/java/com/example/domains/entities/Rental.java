@@ -45,6 +45,7 @@ public class Rental implements Serializable {
 	//bi-directional many-to-one association to Inventory
 	@ManyToOne
 	@JoinColumn(name="inventory_id")
+	@OneToMany(mappedBy="film", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Inventory inventory;
 
 	//bi-directional many-to-one association to Staff

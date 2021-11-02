@@ -42,7 +42,7 @@ public class FilmDTOCreate {
 	@ApiModelProperty(value = "Titulo de la pelicula", required = true, allowableValues = "Un maximo de 255 caracteres")
 	private String title;
 	@ApiModelProperty(value = "Id del idioma de la pelicula" )
-	private Integer languageId;
+	private Integer language;
 	@ApiModelProperty(value = "Idioma original de la pelicula" )
 	private Integer languageVO;
 	@ApiModelProperty(value = "Id de los actores de la pelicula" )
@@ -61,8 +61,8 @@ public class FilmDTOCreate {
 			source.getRentalRate(),
 			source.getReplacementCost(),
 			source.getTitle(),
-			new Language(source.languageId),
-			new Language(source.languageId));
+			new Language(source.language),
+			source.languageVO != null ? new Language(source.languageVO) : null);
 		return peli;
 	}
 	
@@ -76,10 +76,10 @@ public class FilmDTOCreate {
 		target.setRentalRate(rentalRate);
 		target.setReplacementCost(replacementCost);
 		target.setTitle(title);
-		if (languageId == null) {
+		if (language == null) {
 			target.setLanguage(null);
-		} else if(target.getLanguage() == null || (target.getLanguage() != null && target.getLanguage().getLanguageId() != languageId)) {
-			target.setLanguage(new Language(languageId));
+		} else if(target.getLanguage() == null || (target.getLanguage() != null && target.getLanguage().getLanguageId() != language)) {
+			target.setLanguage(new Language(language));
 		}
 		if (languageVO == null) {
 			target.setLanguageVO(null);
